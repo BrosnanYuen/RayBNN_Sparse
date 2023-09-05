@@ -7,19 +7,34 @@ use rayon::prelude::*;
 
 
 
-pub fn COO_to_CSR<Z: arrayfire::IndexableType + arrayfire::ReduceByKeyInput>(
-	WRowIdxCOO: &arrayfire::Array<Z>,
+
+fn gen_const(pair: (usize, i32)) -> Vec<i32>
+{
+    let (i,e) = pair;
+    let a: Vec<i32> = vec![i as i32; e as usize];
+    a
+}
+
+
+
+
+
+
+
+
+
+
+pub fn COO_to_CSR(
+	WRowIdxCOO: &arrayfire::Array<i32>,
     row_num: u64
-    ) -> arrayfire::Array<Z>
+    ) -> arrayfire::Array<i32>
 	{
 
     let WRowIdxCOO_num  = WRowIdxCOO.dims()[0];
 
 
-    let ones = arrayfire::constant::<u64>(1,arrayfire::Dim4::new(&[WRowIdxCOO_num,1,1,1]));
-    let ones = ones.cast::<Z>();
-    let mut temparr = arrayfire::constant::<u64>(0,arrayfire::Dim4::new(&[row_num,1,1,1]));
-    let mut temparr = temparr.cast::<Z>();
+    let ones = arrayfire::constant::<i32>(1,arrayfire::Dim4::new(&[WRowIdxCOO_num,1,1,1]));
+    let mut temparr = arrayfire::constant::<i32>(0,arrayfire::Dim4::new(&[row_num,1,1,1]));
 
     let mut idxrs = arrayfire::Indexer::default();
     idxrs.set_index(WRowIdxCOO, 0, None);
@@ -31,7 +46,7 @@ pub fn COO_to_CSR<Z: arrayfire::IndexableType + arrayfire::ReduceByKeyInput>(
     //let  (_,mut sumarr) = arrayfire::count_by_key(WRowIdxCOO, &ones, 0);
     let  (_,mut sumarr) = arrayfire::sum_by_key(WRowIdxCOO, &ones, 0);
 
-    let sumarr = sumarr.cast::<Z>();
+    sumarr = sumarr.cast::<i32>();
 
 
     let mut idxrs = arrayfire::Indexer::default();
@@ -40,33 +55,14 @@ pub fn COO_to_CSR<Z: arrayfire::IndexableType + arrayfire::ReduceByKeyInput>(
 
 
 
-    temparr = arrayfire::accum(&temparr, 0).cast::<Z>();
+    temparr = arrayfire::accum(&temparr, 0);
 
 
-    let constarr = arrayfire::constant::<u64>(0,arrayfire::Dim4::new(&[1,1,1,1]));
-    let constarr = constarr.cast::<Z>();
+    let constarr = arrayfire::constant::<i32>(0,arrayfire::Dim4::new(&[1,1,1,1]));
     temparr = arrayfire::join(0, &constarr, &temparr);
 
     temparr
 }
-
-
-
-
-
-
-
-
-
-
-
-fn gen_const(pair: (usize, i32)) -> Vec<i32>
-{
-    let (i,e) = pair;
-    let a: Vec<i32> = vec![i as i32; e as usize];
-    a
-}
-
 
 
 
@@ -99,5 +95,6 @@ pub fn CSR_to_COO(
 
     arrayfire::Array::new(&WRowIdxCOO_cpu, WRowIdxCOO_dims)
 }
+
 
 
