@@ -38,11 +38,11 @@ pub fn COO_find<Z: arrayfire::RealNumber>(
 
 
 
-pub fn COO_batch_find(
-	WRowIdxCOO: &arrayfire::Array<i32>,
-    target_rows: &arrayfire::Array<i32>,
+pub fn COO_batch_find<Z: arrayfire::RealNumber>(
+	WRowIdxCOO: &arrayfire::Array<Z>,
+    target_rows: &arrayfire::Array<Z>,
     batch_size: u64
-    ) -> arrayfire::Array<i32>
+    ) -> arrayfire::Array<Z>
 {
 
     let mut i: u64 = 0;
