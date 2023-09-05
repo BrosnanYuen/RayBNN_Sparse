@@ -5,7 +5,7 @@ use arrayfire;
 
 
 
-pub fn COO_to_CSR<Z: arrayfire::IndexableType>(
+pub fn COO_to_CSR<Z: arrayfire::IndexableType + arrayfire::ReduceByKeyInput>(
 	WRowIdxCOO: &arrayfire::Array<Z>,
     row_num: u64
     ) -> arrayfire::Array<Z>
@@ -38,10 +38,11 @@ pub fn COO_to_CSR<Z: arrayfire::IndexableType>(
 
 
 
-    temparr = arrayfire::accum(&temparr, 0);
+    temparr = arrayfire::accum(&temparr, 0).cast::<Z>();
 
 
-    let constarr = arrayfire::constant::<Z>(0,arrayfire::Dim4::new(&[1,1,1,1]));
+    let constarr = arrayfire::constant::<u64>(0,arrayfire::Dim4::new(&[1,1,1,1]));
+    let constarr = constarr.cast::<Z>();
     temparr = arrayfire::join(0, &constarr, &temparr);
 
     temparr
