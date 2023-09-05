@@ -29,4 +29,29 @@ RayBNN_Sparse = "0.1.0"
 # List of Examples
 
 
-# Solving a Simple Linear ODE on CUDA with Float 64 bit precision
+# Convert COO to CSR Sparse Matrix
+
+```
+let mut WRowIdxCSR = RayBNN_Sparse::Util::Convert::COO_to_CSR(&WRowIdxCOO,7);
+```
+
+# Convert CSR to COO Sparse Matrix
+```
+let mut WRowIdxCOO = RayBNN_Sparse::Util::Convert::CSR_to_COO(&WRowIdxCSR);
+```
+
+# Search COO Matrix for value
+```
+let valsel = RayBNN_Sparse::Util::Search::COO_find(&WRowIdxCOO,&idxsel);
+```
+
+
+# Batch Search COO Matrix for value
+```
+let valsel = RayBNN_Sparse::Util::Search::COO_batch_find(&WRowIdxCOO,&idxsel,4);
+```
+
+
+
+
+
