@@ -5,7 +5,7 @@ use arrayfire;
 
 
 
-pub fn COO_to_CSR<Z: arrayfire::HasAfEnum>(
+pub fn COO_to_CSR<Z: arrayfire::IndexableType>(
 	WRowIdxCOO: &arrayfire::Array<Z>,
     row_num: u64
     ) -> arrayfire::Array<Z>
@@ -29,7 +29,7 @@ pub fn COO_to_CSR<Z: arrayfire::HasAfEnum>(
     //let  (_,mut sumarr) = arrayfire::count_by_key(WRowIdxCOO, &ones, 0);
     let  (_,mut sumarr) = arrayfire::sum_by_key(WRowIdxCOO, &ones, 0);
 
-    sumarr = sumarr.cast::<Z>();
+    let sumarr = sumarr.cast::<Z>();
 
 
     let mut idxrs = arrayfire::Indexer::default();
