@@ -5,17 +5,17 @@ use arrayfire;
 
 
 
-pub fn COO_to_CSR(
-	WRowIdxCOO: &arrayfire::Array<i32>,
+pub fn COO_to_CSR<Z: arrayfire::ConstGenerator>(
+	WRowIdxCOO: &arrayfire::Array<Z>,
     row_num: u64
-    ) -> arrayfire::Array<i32>
+    ) -> arrayfire::Array<Z>
 	{
 
     let WRowIdxCOO_num  = WRowIdxCOO.dims()[0];
 
 
-    let ones = arrayfire::constant::<i32>(1,arrayfire::Dim4::new(&[WRowIdxCOO_num,1,1,1]));
-    let mut temparr = arrayfire::constant::<i32>(0,arrayfire::Dim4::new(&[row_num,1,1,1]));
+    let ones = arrayfire::constant::<Z>(1,arrayfire::Dim4::new(&[WRowIdxCOO_num,1,1,1]));
+    let mut temparr = arrayfire::constant::<Z>(0,arrayfire::Dim4::new(&[row_num,1,1,1]));
 
     let mut idxrs = arrayfire::Indexer::default();
     idxrs.set_index(WRowIdxCOO, 0, None);
@@ -27,7 +27,7 @@ pub fn COO_to_CSR(
     //let  (_,mut sumarr) = arrayfire::count_by_key(WRowIdxCOO, &ones, 0);
     let  (_,mut sumarr) = arrayfire::sum_by_key(WRowIdxCOO, &ones, 0);
 
-    sumarr = sumarr.cast::<i32>();
+    sumarr = sumarr.cast::<Z>();
 
 
     let mut idxrs = arrayfire::Indexer::default();
@@ -39,7 +39,7 @@ pub fn COO_to_CSR(
     temparr = arrayfire::accum(&temparr, 0);
 
 
-    let constarr = arrayfire::constant::<i32>(0,arrayfire::Dim4::new(&[1,1,1,1]));
+    let constarr = arrayfire::constant::<Z>(0,arrayfire::Dim4::new(&[1,1,1,1]));
     temparr = arrayfire::join(0, &constarr, &temparr);
 
     temparr
