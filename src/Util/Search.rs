@@ -38,6 +38,75 @@ pub fn COO_find<Z: arrayfire::HasAfEnum>(
 
 
 
+pub fn COO_batch_find(
+	WRowIdxCOO: &arrayfire::Array<i32>,
+    target_rows: &arrayfire::Array<i32>,
+    batch_size: u64
+    ) -> arrayfire::Array<i32>
+{
+
+    let mut i: u64 = 0;
+    let mut startseq: u64 = 0;
+    let mut endseq: u64 = 0;
+    let total_size = target_rows.dims()[0];
+
+
+
+
+
+    startseq = i;
+    endseq = i + batch_size-1;
+    if (endseq >= (total_size-1))
+    {
+        endseq = total_size-1;
+    }
+
+    let seqs = &[arrayfire::Seq::new(startseq as i32, endseq as i32, 1)];
+    let inputarr  = arrayfire::index(target_rows, seqs);
+
+    let mut total_idx= COO_find(
+        WRowIdxCOO,
+        &inputarr
+        );
+    i = i + batch_size;
+
+
+    while i < total_size
+    {
+        startseq = i;
+        endseq = i + batch_size-1;
+        if (endseq >= (total_size-1))
+        {
+            endseq = total_size-1;
+        }
+
+        let seqs = &[arrayfire::Seq::new(startseq as i32, endseq as i32, 1)];
+        let inputarr = arrayfire::index(target_rows, seqs);
+
+        let idx= COO_find(
+            WRowIdxCOO,
+            &inputarr
+            );
+        
+        if (idx.dims()[0] > 0)
+        {
+            total_idx = arrayfire::join(0, &total_idx, &idx);
+        }
+
+        i = i + batch_size;
+    }
+
+
+
+    arrayfire::sort(&total_idx,0,true)
+}
+
+
+
+
+
+
+
 
 
 
