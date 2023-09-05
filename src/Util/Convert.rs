@@ -5,7 +5,7 @@ use arrayfire;
 
 
 
-pub fn COO_to_CSR<Z: arrayfire::ConstGenerator>(
+pub fn COO_to_CSR<Z: arrayfire::HasAfEnum>(
 	WRowIdxCOO: &arrayfire::Array<Z>,
     row_num: u64
     ) -> arrayfire::Array<Z>
@@ -14,8 +14,10 @@ pub fn COO_to_CSR<Z: arrayfire::ConstGenerator>(
     let WRowIdxCOO_num  = WRowIdxCOO.dims()[0];
 
 
-    let ones = arrayfire::constant::<Z>(1,arrayfire::Dim4::new(&[WRowIdxCOO_num,1,1,1]));
-    let mut temparr = arrayfire::constant::<Z>(0,arrayfire::Dim4::new(&[row_num,1,1,1]));
+    let ones = arrayfire::constant::<u64>(1,arrayfire::Dim4::new(&[WRowIdxCOO_num,1,1,1]));
+    let ones = ones.cast::<Z>();
+    let mut temparr = arrayfire::constant::<u64>(0,arrayfire::Dim4::new(&[row_num,1,1,1]));
+    let mut temparr = temparr.cast::<Z>();
 
     let mut idxrs = arrayfire::Indexer::default();
     idxrs.set_index(WRowIdxCOO, 0, None);
