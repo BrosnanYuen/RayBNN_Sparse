@@ -11,10 +11,10 @@ use rayon::prelude::*;
 
 
 
-pub fn COO_find(
-	WRowIdxCOO: &arrayfire::Array<i32>,
-    target_rows: &arrayfire::Array<i32>
-    ) -> arrayfire::Array<i32>
+pub fn COO_find<Z: arrayfire::HasAfEnum>(
+	WRowIdxCOO: &arrayfire::Array<Z>,
+    target_rows: &arrayfire::Array<Z>
+    ) -> arrayfire::Array<Z>
 {
     let target_row_num  = target_rows.dims()[0];
     let WRowIdxCOO_num  = WRowIdxCOO.dims()[0];
@@ -28,7 +28,7 @@ pub fn COO_find(
 
     bool_result = arrayfire::any_true(&bool_result, 1);
 
-    arrayfire::locate(&bool_result).cast::<i32>()
+    arrayfire::locate(&bool_result).cast::<Z>()
 }
 
 
