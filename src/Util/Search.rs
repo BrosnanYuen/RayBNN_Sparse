@@ -61,8 +61,7 @@ pub fn COO_batch_find(
         endseq = total_size-1;
     }
 
-    let seqs = &[arrayfire::Seq::new(startseq as i32, endseq as i32, 1)];
-    let inputarr  = arrayfire::index(target_rows, seqs);
+    let inputarr  = arrayfire::rows(target_rows, startseq  as i64,endseq as i64);
 
     let mut total_idx= COO_find(
         WRowIdxCOO,
@@ -80,8 +79,7 @@ pub fn COO_batch_find(
             endseq = total_size-1;
         }
 
-        let seqs = &[arrayfire::Seq::new(startseq as i32, endseq as i32, 1)];
-        let inputarr = arrayfire::index(target_rows, seqs);
+        let inputarr  = arrayfire::rows(target_rows, startseq  as i64,endseq as i64);
 
         let idx= COO_find(
             WRowIdxCOO,
