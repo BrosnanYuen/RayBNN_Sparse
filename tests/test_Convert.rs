@@ -112,7 +112,78 @@ fn test_convert() {
 
 
 
+    let WValues_cpu: [f64; 12] = [4.1, 1.7, -0.9, 0.3, -2.0, 5.0, -1.0, 0.42, -0.2, 0.1, 3.1, 10.0];
+	let mut WValues = arrayfire::Array::new(&WValues_cpu, arrayfire::Dim4::new(&[12, 1, 1, 1]));
 
 
-	
+    let WRowIdxCSR_cpu: [i32; 8] = [0,0,0,2,4,6,9,12];
+	let mut WRowIdxCSR = arrayfire::Array::new(&WRowIdxCSR_cpu, arrayfire::Dim4::new(&[8, 1, 1, 1]));
+
+
+    let WColIdx_cpu: [i32; 12] = [0,1,0,1,0,1,2,3,4,2,3,4];
+	let mut WColIdx = arrayfire::Array::new(&WColIdx_cpu, arrayfire::Dim4::new(&[12, 1, 1, 1]));
+
+
+
+    let W = arrayfire::sparse::<f64>(
+		7,
+		7,
+		&WValues,
+		&WRowIdxCSR,
+		&WColIdx,
+		arrayfire::SparseFormat::CSR);
+
+    let Wtemp = arrayfire::sparse_to_dense(&W);
+
+
+
+
+    let mut WRowIdxCOO = RayBNN_Sparse::Util::Convert::CSR_to_COO(&WRowIdxCSR);
+
+
+
+    let WRowIdxCOO_cpuact:Vec<i32> = vec![2,2,3,3,4,4,5,5,5,6,6,6];
+
+    let mut WRowIdxCOO_cpu = vec!(i32::default();WRowIdxCOO.elements());
+    WRowIdxCOO.host(&mut WRowIdxCOO_cpu);
+
+
+    assert_eq!(WRowIdxCOO_cpu, WRowIdxCOO_cpuact);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let WRowIdxCSR_cpu:Vec<i32> = vec![0,5,5,6,10,10,10,18,20];
+	let mut WRowIdxCSR = arrayfire::Array::new(&WRowIdxCSR_cpu, arrayfire::Dim4::new(&[WRowIdxCSR_cpu.len() as u64, 1, 1, 1]));
+
+
+
+    let mut WRowIdxCOO = RayBNN_Sparse::Util::Convert::CSR_to_COO(&WRowIdxCSR);
+
+
+    let WRowIdxCOO_cpuact:Vec<i32> = vec![0,0,0,0,0,2,3,3,3,3,6,6,6,6,6,6,6,6,7,7];
+
+    let mut WRowIdxCOO_cpu = vec!(i32::default();WRowIdxCOO.elements());
+    WRowIdxCOO.host(&mut WRowIdxCOO_cpu);
+
+
+    assert_eq!(WRowIdxCOO_cpu, WRowIdxCOO_cpuact);
+
+
+
+
+
+
+
+
 }
