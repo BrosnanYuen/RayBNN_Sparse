@@ -11,7 +11,7 @@ use rayon::prelude::*;
 
 
 
-pub fn COO_find<Z: arrayfire::HasAfEnum>(
+pub fn COO_find<Z: arrayfire::RealNumber>(
 	WRowIdxCOO: &arrayfire::Array<Z>,
     target_rows: &arrayfire::Array<Z>
     ) -> arrayfire::Array<Z>
