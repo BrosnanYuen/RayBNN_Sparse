@@ -294,4 +294,80 @@ fn test_search() {
 
 
 
+
+    let in_idx_cpu:Vec<u32> = vec![1,4,6,7,9,2,4,5,7,9,1];
+	let mut in_idx = arrayfire::Array::new(&in_idx_cpu, arrayfire::Dim4::new(&[11, 1, 1, 1]));
+
+
+    let out_idx = RayBNN_Sparse::Util::Search::find_unique(
+            &in_idx,
+            20
+    	);
+
+    let out_idx_act:Vec<u32> = vec![1,2,4,5,6,7,9];
+
+    let mut out_idx_cpu = vec!(u32::default();out_idx.elements());
+    out_idx.host(&mut out_idx_cpu);
+
+    assert_eq!(out_idx_act, out_idx_cpu);
+
+
+
+
+
+
+
+
+
+
+
+
+    let in_idx_cpu:Vec<i64> = vec![6,3,0,1,5,3,7,0,11,1,5,5,5,1];
+	let mut in_idx = arrayfire::Array::new(&in_idx_cpu, arrayfire::Dim4::new(&[14, 1, 1, 1]));
+
+
+    let out_idx = RayBNN_Sparse::Util::Search::find_unique(
+            &in_idx,
+            20
+    	);
+
+    let out_idx_act:Vec<i64> = vec![0,1,3,5,6,7,11];
+
+    let mut out_idx_cpu = vec!(i64::default();out_idx.elements());
+    out_idx.host(&mut out_idx_cpu);
+
+    assert_eq!(out_idx_act, out_idx_cpu);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let in_idx_cpu:Vec<u64> = vec![6,3,0,1,5,3,7,0,11,1,5,5,5,1];
+	let mut in_idx = arrayfire::Array::new(&in_idx_cpu, arrayfire::Dim4::new(&[14, 1, 1, 1]));
+
+
+    let out_idx = RayBNN_Sparse::Util::Search::find_unique(
+            &in_idx,
+            20
+    	);
+
+    let out_idx_act:Vec<u64> = vec![0,1,3,5,6,7,11];
+
+    let mut out_idx_cpu = vec!(u64::default();out_idx.elements());
+    out_idx.host(&mut out_idx_cpu);
+
+    assert_eq!(out_idx_act, out_idx_cpu);
+
+
+
 }
