@@ -107,10 +107,10 @@ pub fn COO_batch_find<Z: arrayfire::RealNumber>(
 
 
 
-pub fn find_unique(
-    arr: &arrayfire::Array<i32>,
+pub fn find_unique<Z: arrayfire::IndexableType>(
+    arr: &arrayfire::Array<Z>,
     neuron_size: u64
-    ) -> arrayfire::Array<i32>
+    ) -> arrayfire::Array<Z>
     {
 
     let table_dims = arrayfire::Dim4::new(&[neuron_size,1,1,1]);
@@ -123,7 +123,7 @@ pub fn find_unique(
     idxrs.set_index(arr, 0, None);
     arrayfire::assign_gen(&mut table, &idxrs, &inarr);
 
-    arrayfire::locate(&table).cast::<i32>()
+    arrayfire::locate(&table).cast::<Z>()
 }
 
 
