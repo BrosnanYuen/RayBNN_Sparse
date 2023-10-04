@@ -71,3 +71,39 @@ pub fn clear_output<Z: arrayfire::FloatingPoint>(
     );
 }
 
+
+
+
+
+
+
+
+
+
+
+pub fn clear_input_to_hidden<Z: arrayfire::FloatingPoint>(
+    WValues: &mut arrayfire::Array<Z>,
+    WRowIdxCOO: &mut arrayfire::Array<i32>,
+    WColIdx: &mut arrayfire::Array<i32>,
+    input_cols: u64
+)
+{
+
+
+    let single = input_cols as i32;
+
+    //let cmp2 = (WColIdx >= single );
+    let cmp1 = arrayfire::ge(WColIdx, &single, false);
+
+    let sel = arrayfire::locate(&cmp1);
+
+    select_values::<Z>(
+        WValues,
+        WRowIdxCOO,
+        WColIdx,
+        &sel
+    );
+}
+
+
+
