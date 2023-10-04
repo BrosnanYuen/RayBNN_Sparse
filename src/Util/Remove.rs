@@ -1,4 +1,5 @@
 use arrayfire;
+use half;
 
 use crate::Util::Search::find_unique;
 
@@ -126,7 +127,25 @@ pub fn delete_smallest_weights<Z: arrayfire::FloatingPoint>(
 )
 {
     let WValues_num  = WValues.dims()[0];
-    let abs = arrayfire::abs(&WValues);
+
+    let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	let mut abs = arrayfire::constant(0.0,single_dims);
+
+    if WValues.is_half()
+    {
+        let abs = arrayfire::abs(&WValues).cast::<half::f16>();
+    }
+    else if WValues.is_floating()
+    {
+        let abs = arrayfire::abs(&WValues).cast::<f32>();
+    }
+    else 
+    {
+        let abs = arrayfire::abs(&WValues).cast::<f64>();
+    }
+
+
+    //let abs = arrayfire::abs(&WValues);
     //Sort to find small weights
     let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
 
