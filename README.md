@@ -68,3 +68,16 @@ let global_idx = RayBNN_Sparse::Util::Convert::get_global_weight_idx2(
     &WColIdx
 );
 ```
+
+
+# Clear inputs to weighted adjancency matrix
+```
+RayBNN_Sparse::Util::Remove::clear_input::<f32>(
+    &mut WValues,
+    &mut WRowIdxCOO,
+    &mut WColIdx,
+    3
+);
+```
+
+
