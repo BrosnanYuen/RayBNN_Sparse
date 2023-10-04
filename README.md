@@ -92,4 +92,14 @@ RayBNN_Sparse::Util::Remove::clear_output::<f32>(
 ```
 
 
+# Clear input to hidden neurons of the weighted adjancency matrix
+```
+RayBNN_Sparse::Util::Remove::clear_input_to_hidden::<f64>(
+    &mut WValues,
+    &mut WRowIdxCOO,
+    &mut WColIdx,
+    3
+);
+```
+
 
