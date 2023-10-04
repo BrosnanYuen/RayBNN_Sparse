@@ -31,7 +31,7 @@ pub fn clear_input<Z: arrayfire::FloatingPoint>(
 
     let single = input_rows as i32;
 
-    //let cmp2 = (single <= WRowIdxCOO );
+    
     let cmp1 = arrayfire::le(&single ,WRowIdxCOO, false);
 
     let sel = arrayfire::locate(&cmp1);
@@ -59,7 +59,7 @@ pub fn clear_output<Z: arrayfire::FloatingPoint>(
 
     let single = output_cols as i32;
 
-    //let cmp2 = (WColIdx < single );
+    
     let cmp1 = arrayfire::lt(WColIdx, &single, false);
 
     let sel = arrayfire::locate(&cmp1);
@@ -93,7 +93,7 @@ pub fn clear_input_to_hidden<Z: arrayfire::FloatingPoint>(
 
     let single = input_cols as i32;
 
-    //let cmp2 = (WColIdx >= single );
+    
     let cmp1 = arrayfire::ge(WColIdx, &single, false);
 
     let sel = arrayfire::locate(&cmp1);
@@ -148,9 +148,6 @@ pub fn delete_smallest_weights<Z: arrayfire::FloatingPoint>(
     }
 
 
-    //let abs = arrayfire::abs(&WValues);
-    //Sort to find small weights
-    //let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
 
 
 
