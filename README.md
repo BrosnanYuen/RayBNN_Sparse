@@ -81,3 +81,15 @@ RayBNN_Sparse::Util::Remove::clear_input::<f32>(
 ```
 
 
+# Clear output of the weighted adjancency matrix
+```
+RayBNN_Sparse::Util::Remove::clear_output::<f32>(
+    &mut WValues,
+    &mut WRowIdxCOO,
+    &mut WColIdx,
+    7-2
+);
+```
+
+
+
