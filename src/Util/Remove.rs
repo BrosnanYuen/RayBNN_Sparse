@@ -118,8 +118,8 @@ pub fn clear_input_to_hidden<Z: arrayfire::FloatingPoint>(
 
 
 
-pub fn delete_smallest_weights(
-    WValues: &mut arrayfire::Array<f64>,
+pub fn delete_smallest_weights<Z: arrayfire::FloatingPoint>(
+    WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>,
     del_num: u64
