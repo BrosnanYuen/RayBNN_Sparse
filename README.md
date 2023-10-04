@@ -51,7 +51,11 @@ let valsel = RayBNN_Sparse::Util::Search::COO_find(&WRowIdxCOO,&idxsel);
 let valsel = RayBNN_Sparse::Util::Search::COO_batch_find(&WRowIdxCOO,&idxsel,4);
 ```
 
-
-
-
-
+# Get global index
+```
+let global_idx = RayBNN_Sparse::Util::Convert::get_global_weight_idx(
+    2000, 
+    &WRowIdxCOO, 
+    &WColIdx
+);
+```

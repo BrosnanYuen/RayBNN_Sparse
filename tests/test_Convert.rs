@@ -215,7 +215,42 @@ fn test_convert() {
     let global_idx = RayBNN_Sparse::Util::Convert::get_global_weight_idx(
         2000, 
         &WRowIdxCOO, 
-        &WColIdx);
+        &WColIdx
+    );
+
+    let global_idx_act:Vec<u64> = vec![46120, 46140, 62315, 68421, 80064, 80071, 80091];
+
+    let mut global_idx_cpu = vec!(u64::default();global_idx.elements());
+    global_idx.host(&mut global_idx_cpu);
+
+    assert_eq!(global_idx_act, global_idx_cpu);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let WRowIdxCOO_cpu:Vec<i32> = vec![23,23,31,34, 40,40,40];
+	let mut WRowIdxCOO = arrayfire::Array::new(&WRowIdxCOO_cpu, arrayfire::Dim4::new(&[WRowIdxCOO_cpu.len() as u64, 1, 1, 1]));
+
+
+    let WColIdx_cpu:Vec<i32> = vec![120,140,315,421, 64,71,91];
+	let mut WColIdx = arrayfire::Array::new(&WColIdx_cpu, arrayfire::Dim4::new(&[WColIdx_cpu.len() as u64, 1, 1, 1]));
+
+
+
+    let global_idx = RayBNN_Sparse::Util::Convert::get_global_weight_idx2(
+        2000, 
+        &WRowIdxCOO, 
+        &WColIdx
+    );
 
     let global_idx_act:Vec<u64> = vec![46120, 46140, 62315, 68421, 80064, 80071, 80091];
 
