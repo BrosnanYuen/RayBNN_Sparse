@@ -6,6 +6,31 @@ use arrayfire;
 use rayon::prelude::*;
 
 
+pub fn get_global_weight_idx(
+    neuron_size: u64,
+    WRowIdxCOO: &arrayfire::Array<i32>,
+    WColIdx: &arrayfire::Array<i32>,
+) -> arrayfire::Array<u64>
+{
+
+
+    (WRowIdxCOO.cast::<u64>()*(neuron_size)) +  WColIdx.cast::<u64>()
+}
+
+
+
+pub fn get_global_weight_idx2(
+    neuron_size: u64,
+    WRowIdxCOO: &arrayfire::Array<i32>,
+    WColIdx: &arrayfire::Array<i32>,
+) -> arrayfire::Array<u64>
+{
+
+
+    WRowIdxCOO.cast::<u64>() +  (WColIdx.cast::<u64>()*(neuron_size))
+}
+
+
 
 
 fn gen_const(pair: (usize, i32)) -> Vec<i32>
