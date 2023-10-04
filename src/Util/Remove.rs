@@ -129,13 +129,13 @@ pub fn delete_smallest_weights<Z: arrayfire::FloatingPoint>(
     let WValues_num  = WValues.dims()[0];
 
     let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
-	let mut abs = arrayfire::constant(0.0,single_dims);
+	let mut idx = arrayfire::constant::<u32>(0,single_dims);
 
     if WValues.is_half()
     {
         let abs = arrayfire::abs(&WValues).cast::<half::f16>();
     }
-    else if WValues.is_floating()
+    else if WValues.is_single()
     {
         let abs = arrayfire::abs(&WValues).cast::<f32>();
     }
