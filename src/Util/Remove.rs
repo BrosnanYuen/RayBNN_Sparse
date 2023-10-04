@@ -134,20 +134,23 @@ pub fn delete_smallest_weights<Z: arrayfire::FloatingPoint>(
     if WValues.is_half()
     {
         let abs = arrayfire::abs(&WValues).cast::<half::f16>();
+        (_,idx) = arrayfire::sort_index(&abs, 0, false);
     }
     else if WValues.is_single()
     {
         let abs = arrayfire::abs(&WValues).cast::<f32>();
+        (_,idx) = arrayfire::sort_index(&abs, 0, false);
     }
     else 
     {
         let abs = arrayfire::abs(&WValues).cast::<f64>();
+        (_,idx) = arrayfire::sort_index(&abs, 0, false);
     }
 
 
     //let abs = arrayfire::abs(&WValues);
     //Sort to find small weights
-    let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
+    //let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
 
 
 
