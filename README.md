@@ -59,3 +59,12 @@ let global_idx = RayBNN_Sparse::Util::Convert::get_global_weight_idx(
     &WColIdx
 );
 ```
+
+# Get global index 2
+```
+let global_idx = RayBNN_Sparse::Util::Convert::get_global_weight_idx2(
+    2000, 
+    &WRowIdxCOO, 
+    &WColIdx
+);
+```

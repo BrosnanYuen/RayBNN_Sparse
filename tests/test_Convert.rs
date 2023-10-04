@@ -252,7 +252,7 @@ fn test_convert() {
         &WColIdx
     );
 
-    let global_idx_act:Vec<u64> = vec![46120, 46140, 62315, 68421, 80064, 80071, 80091];
+    let global_idx_act:Vec<u64> = vec![240023, 280023, 630031, 842034, 128040, 142040, 182040];
 
     let mut global_idx_cpu = vec!(u64::default();global_idx.elements());
     global_idx.host(&mut global_idx_cpu);
