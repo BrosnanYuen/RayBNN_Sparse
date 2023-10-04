@@ -1,6 +1,6 @@
 use arrayfire;
 
-
+use crate::Util::Search::find_unique;
 
 
 pub fn select_values<Z: arrayfire::FloatingPoint>(
@@ -104,6 +104,58 @@ pub fn clear_input_to_hidden<Z: arrayfire::FloatingPoint>(
         &sel
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pub fn delete_smallest_weights(
+    WValues: &mut arrayfire::Array<f64>,
+    WRowIdxCOO: &mut arrayfire::Array<i32>,
+    WColIdx: &mut arrayfire::Array<i32>,
+    del_num: u64
+)
+{
+    let WValues_num  = WValues.dims()[0];
+    let abs = arrayfire::abs(&WValues);
+    //Sort to find small weights
+    let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
+
+
+
+    //Select biggest weights
+    let mut sel = arrayfire::rows(&idx, 0, (WValues_num-del_num-1)  as i64);
+
+    sel = find_unique(
+        &sel,
+        WValues_num
+    );
+
+
+
+    //Select COO Matrix
+    select_values(
+        WValues,
+        WRowIdxCOO,
+        WColIdx,
+        &sel
+    );
+}
+
+
+
+
+
+
 
 
 
