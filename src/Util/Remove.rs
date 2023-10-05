@@ -176,5 +176,53 @@ pub fn delete_smallest_weights<Z: arrayfire::FloatingPoint>(
 
 
 
+pub fn delete_weights_with_prob<Z: arrayfire::FloatingPoint>(
+    WValues: &mut arrayfire::Array<Z>,
+    WRowIdxCOO: &mut arrayfire::Array<i32>,
+    WColIdx: &mut arrayfire::Array<i32>,
+    del_num: u64
+)
+{
+
+    let WValues_num  = WValues.dims()[0];
+    let mut abs = arrayfire::abs(&WValues);
+
+
+    let randarr = arrayfire::randu::<f64>(abs.dims());
+
+    abs = arrayfire::mul(&abs, &randarr, false);
+
+
+    //Sort to find small weights
+    let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
+
+
+
+    //Select biggest weights
+    let mut sel = arrayfire::rows(&idx, 0, (WValues_num-del_num-1)  as i64);
+
+    sel = find_unique(
+        &sel,
+        WValues_num
+    );
+
+
+
+    //Select COO Matrix
+    select_values(
+        WValues,
+        WRowIdxCOO,
+        WColIdx,
+        &sel
+    );
+
+
+
+
+
+}
+
+
+
 
 
