@@ -10,7 +10,7 @@ const LOOP_THRESHOLD:usize = 6;
 
 
 
-pub fn block_sparse_matmul_rayon(
+pub fn matmul_rayon(
 	input_start: &Vec<i64>,
     input_end: &Vec<i64>,
 
@@ -79,7 +79,7 @@ pub fn block_sparse_matmul_rayon(
 
 
 
-pub fn block_sparse_matmul_loop(
+pub fn matmul_loop(
 	input_start: &Vec<i64>,
     input_end: &Vec<i64>,
 
@@ -165,7 +165,7 @@ pub fn block_sparse_matmul_loop(
 
 
 
-pub fn block_sparse_matmul(
+pub fn matmul(
 	input_start: &Vec<i64>,
     input_end: &Vec<i64>,
 
@@ -179,7 +179,7 @@ pub fn block_sparse_matmul(
 {
     if input_start.len() < LOOP_THRESHOLD
     {
-        return block_sparse_matmul_loop(
+        return matmul_loop(
             &input_start,
             &input_end,
         
@@ -192,7 +192,7 @@ pub fn block_sparse_matmul(
     }
     else
     {
-        return block_sparse_matmul_rayon(
+        return matmul_rayon(
             &input_start,
             &input_end,
         
@@ -222,7 +222,7 @@ pub fn block_sparse_matmul(
 
 
 
-pub fn trans_block_sparse_matmul_rayon(
+pub fn trans_matmul_rayon(
 	pointer_start: &Vec<i64>,
     pointer_end: &Vec<i64>,
 
@@ -301,7 +301,7 @@ pub fn trans_block_sparse_matmul_rayon(
 
 
 
-pub fn trans_block_sparse_matmul_loop(
+pub fn trans_matmul_loop(
 	pointer_start: &Vec<i64>,
     pointer_end: &Vec<i64>,
 
@@ -391,7 +391,7 @@ pub fn trans_block_sparse_matmul_loop(
 
 
 
-pub fn trans_block_sparse_matmul(
+pub fn trans_matmul(
 	pointer_start: &Vec<i64>,
     pointer_end: &Vec<i64>,
 
@@ -403,7 +403,7 @@ pub fn trans_block_sparse_matmul(
 {
     if pointer_start.len() < LOOP_THRESHOLD
     {
-        return trans_block_sparse_matmul_loop(
+        return trans_matmul_loop(
             &pointer_start,
             &pointer_end,
         
@@ -415,7 +415,7 @@ pub fn trans_block_sparse_matmul(
     }
     else
     {
-        return trans_block_sparse_matmul_rayon(
+        return trans_matmul_rayon(
             &pointer_start,
             &pointer_end,
         
