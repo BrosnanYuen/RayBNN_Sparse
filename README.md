@@ -103,3 +103,15 @@ RayBNN_Sparse::Util::Remove::clear_input_to_hidden::<f64>(
 ```
 
 
+# Delete the smallest weights in the weighted adjancency matrix
+```
+RayBNN_Sparse::Util::Remove::delete_smallest_weights::<f32>(
+    &mut WValues,
+    &mut WRowIdxCOO,
+    &mut WColIdx,
+    3
+);
+```
+
+
+
