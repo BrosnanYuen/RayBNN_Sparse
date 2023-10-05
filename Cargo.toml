@@ -1,11 +1,11 @@
 [package]
 name = "RayBNN_Sparse"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Brosnan Yuen <brosnanyuen@gmail.com>"]
 edition = "2021"
 description = "Sparse Matrix Library for GPUs, CPUs, and FPGAs via CUDA, OpenCL, and oneAPI"
 readme = "README.md"
-repository = "https://github.com/BrosnanYuen/RayBNN_DiffEq"
+repository = "https://github.com/BrosnanYuen/RayBNN_Sparse"
 keywords = ["sparse","math","equation","CUDA","OpenCL"]
 license = "GPL-3.0-only"
 categories = ["science"]
