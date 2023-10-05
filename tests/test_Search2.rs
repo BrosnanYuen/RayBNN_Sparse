@@ -10,7 +10,7 @@ const DEVICE: i32 = 0;
 
 
 #[test]
-fn test_search() {
+fn test_search2() {
 
 	arrayfire::set_backend(BACK_END);
 	arrayfire::set_device(DEVICE);
