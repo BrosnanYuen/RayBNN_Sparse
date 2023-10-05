@@ -18,13 +18,13 @@ pub fn matmul_rayon<Z: arrayfire::FloatingPoint>(
     block_end: &Vec<i64>,
 
 
-    input: &arrayfire::Array<f64>,
-    block: &arrayfire::Array<f64>
-    ) -> arrayfire::Array<f64>
+    input: &arrayfire::Array<Z>,
+    block: &arrayfire::Array<Z>
+    ) -> arrayfire::Array<Z>
 {
 
 
-    let output_vec: Vec<arrayfire::Array<f64> > = (input_start, input_end, block_start,  block_end).into_par_iter()
+    let output_vec: Vec<arrayfire::Array<Z> > = (input_start, input_end, block_start,  block_end).into_par_iter()
     .map(|(istart, iend, bstart,bend)| {
         
         //[lhs.dims()[0]  rhs.dims()[0] ]
@@ -87,9 +87,9 @@ pub fn matmul_loop<Z: arrayfire::FloatingPoint>(
     block_end: &Vec<i64>,
 
 
-    input: &arrayfire::Array<f64>,
-    block: &arrayfire::Array<f64>
-    ) -> arrayfire::Array<f64>
+    input: &arrayfire::Array<Z>,
+    block: &arrayfire::Array<Z>
+    ) -> arrayfire::Array<Z>
 {
 
     let mut istart = 0;
@@ -100,7 +100,7 @@ pub fn matmul_loop<Z: arrayfire::FloatingPoint>(
 
     let outputarr_dims = arrayfire::Dim4::new(&[1,block.dims()[1],1,1]);
 
-    let mut outputarr = arrayfire::constant::<f64>(0.0,outputarr_dims);
+    let mut outputarr = arrayfire::constant::<Z>(0.0,outputarr_dims);
     for ii in 0..input_start.len()
     {
         istart = input_start[ii];
@@ -173,9 +173,9 @@ pub fn matmul<Z: arrayfire::FloatingPoint>(
     block_end: &Vec<i64>,
 
 
-    input: &arrayfire::Array<f64>,
-    block: &arrayfire::Array<f64>
-    ) -> arrayfire::Array<f64>
+    input: &arrayfire::Array<Z>,
+    block: &arrayfire::Array<Z>
+    ) -> arrayfire::Array<Z>
 {
     if input_start.len() < LOOP_THRESHOLD
     {
@@ -228,13 +228,13 @@ pub fn trans_matmul_rayon<Z: arrayfire::FloatingPoint>(
 
     seg_size: &Vec<u64>,
 
-    input: &arrayfire::Array<f64>,
-    block: &arrayfire::Array<f64>
-    ) -> arrayfire::Array<f64>
+    input: &arrayfire::Array<Z>,
+    block: &arrayfire::Array<Z>
+    ) -> arrayfire::Array<Z>
 {
 
 
-    let output_vec: Vec<arrayfire::Array<f64> > = (pointer_start, pointer_end, seg_size).into_par_iter()
+    let output_vec: Vec<arrayfire::Array<Z> > = (pointer_start, pointer_end, seg_size).into_par_iter()
     .map(|(istart, iend, segs)| {
         
         //[lhs.dims()[0]  rhs.dims()[0] ]
@@ -307,9 +307,9 @@ pub fn trans_matmul_loop<Z: arrayfire::FloatingPoint>(
 
     seg_size: &Vec<u64>,
 
-    input: &arrayfire::Array<f64>,
-    block: &arrayfire::Array<f64>
-    ) -> arrayfire::Array<f64>
+    input: &arrayfire::Array<Z>,
+    block: &arrayfire::Array<Z>
+    ) -> arrayfire::Array<Z>
 {
 
 
@@ -321,7 +321,7 @@ pub fn trans_matmul_loop<Z: arrayfire::FloatingPoint>(
 
     let outputarr_dims = arrayfire::Dim4::new(&[1,block.dims()[1],1,1]);
 
-    let mut outputarr = arrayfire::constant::<f64>(0.0,outputarr_dims);
+    let mut outputarr = arrayfire::constant::<Z>(0.0,outputarr_dims);
     for ii in 0..pointer_start.len()
     {
         istart = pointer_start[ii];
@@ -397,9 +397,9 @@ pub fn trans_matmul<Z: arrayfire::FloatingPoint>(
 
     seg_size: &Vec<u64>,
 
-    input: &arrayfire::Array<f64>,
-    block: &arrayfire::Array<f64>
-    ) -> arrayfire::Array<f64>
+    input: &arrayfire::Array<Z>,
+    block: &arrayfire::Array<Z>
+    ) -> arrayfire::Array<Z>
 {
     if pointer_start.len() < LOOP_THRESHOLD
     {
