@@ -185,16 +185,46 @@ pub fn delete_weights_with_prob<Z: arrayfire::FloatingPoint>(
 {
 
     let WValues_num  = WValues.dims()[0];
-    let mut abs = arrayfire::abs(&WValues);
+    //let mut abs = arrayfire::abs(&WValues);
 
 
-    let randarr = arrayfire::randu::<f64>(abs.dims());
-
-    abs = arrayfire::mul(&abs, &randarr, false);
+    //let randarr = arrayfire::randu::<f64>(abs.dims());
+    //abs = arrayfire::mul(&abs, &randarr, false);
 
 
     //Sort to find small weights
-    let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
+    //let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
+
+
+
+
+
+    let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	let mut idx = arrayfire::constant::<u32>(0,single_dims);
+
+    if WValues.is_half()
+    {
+        let mut abs = arrayfire::abs(&WValues).cast::<half::f16>();
+        let randarr = arrayfire::randu::<half::f16>(abs.dims());
+        abs = arrayfire::mul(&abs, &randarr, false);
+        (_,idx) = arrayfire::sort_index(&abs, 0, false);
+    }
+    else if WValues.is_single()
+    {
+        let mut abs = arrayfire::abs(&WValues).cast::<f32>();
+        let randarr = arrayfire::randu::<f32>(abs.dims());
+        abs = arrayfire::mul(&abs, &randarr, false);
+        (_,idx) = arrayfire::sort_index(&abs, 0, false);
+    }
+    else 
+    {
+        let mut abs = arrayfire::abs(&WValues).cast::<f64>();
+        let randarr = arrayfire::randu::<f64>(abs.dims());
+        abs = arrayfire::mul(&abs, &randarr, false);
+        (_,idx) = arrayfire::sort_index(&abs, 0, false);
+    }
+
+
 
 
 
