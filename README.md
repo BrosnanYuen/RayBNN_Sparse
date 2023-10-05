@@ -126,5 +126,39 @@ RayBNN_Sparse::Util::Remove::delete_weights_with_prob::<f64>(
 
 
 
+# Remap rows in  weighted adjancency matrix
+```
+let valsel = RayBNN_Sparse::Util::Convert::remap_rows(&dictionary, &idx,1000);
+```
 
 
+# Block Matrix Multiplication
+```
+RayBNN_Sparse::Matrix::Block::matmul::<f64>(
+	&input_start,
+    &input_end,
+
+    &block_start,
+    &block_end,
+
+
+    &input,
+    &block
+);
+```
+
+
+# Transpose Block Matrix Multiplication
+```
+RayBNN_Sparse::Matrix::Block::trans_matmul::<f64>(
+	&input_start,
+    &input_end,
+
+    &block_start,
+    &block_end,
+
+
+    &input,
+    &block
+);
+```
