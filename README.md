@@ -114,4 +114,17 @@ RayBNN_Sparse::Util::Remove::delete_smallest_weights::<f32>(
 ```
 
 
+# Delete the smallest weights with a random probability in the weighted adjancency matrix
+```
+RayBNN_Sparse::Util::Remove::delete_weights_with_prob::<f64>(
+    &mut WValues,
+    &mut WRowIdxCOO,
+    &mut WColIdx,
+    3
+);
+```
+
+
+
+
 
