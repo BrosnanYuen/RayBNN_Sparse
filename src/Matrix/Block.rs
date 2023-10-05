@@ -10,7 +10,7 @@ const LOOP_THRESHOLD:usize = 6;
 
 
 
-pub fn matmul_rayon(
+pub fn matmul_rayon<Z: arrayfire::FloatingPoint>(
 	input_start: &Vec<i64>,
     input_end: &Vec<i64>,
 
@@ -79,7 +79,7 @@ pub fn matmul_rayon(
 
 
 
-pub fn matmul_loop(
+pub fn matmul_loop<Z: arrayfire::FloatingPoint>(
 	input_start: &Vec<i64>,
     input_end: &Vec<i64>,
 
@@ -165,7 +165,7 @@ pub fn matmul_loop(
 
 
 
-pub fn matmul(
+pub fn matmul<Z: arrayfire::FloatingPoint>(
 	input_start: &Vec<i64>,
     input_end: &Vec<i64>,
 
@@ -222,7 +222,7 @@ pub fn matmul(
 
 
 
-pub fn trans_matmul_rayon(
+pub fn trans_matmul_rayon<Z: arrayfire::FloatingPoint>(
 	pointer_start: &Vec<i64>,
     pointer_end: &Vec<i64>,
 
@@ -301,7 +301,7 @@ pub fn trans_matmul_rayon(
 
 
 
-pub fn trans_matmul_loop(
+pub fn trans_matmul_loop<Z: arrayfire::FloatingPoint>(
 	pointer_start: &Vec<i64>,
     pointer_end: &Vec<i64>,
 
@@ -391,7 +391,7 @@ pub fn trans_matmul_loop(
 
 
 
-pub fn trans_matmul(
+pub fn trans_matmul<Z: arrayfire::FloatingPoint>(
 	pointer_start: &Vec<i64>,
     pointer_end: &Vec<i64>,
 
