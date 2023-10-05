@@ -123,3 +123,44 @@ pub fn CSR_to_COO(
 
 
 
+
+
+
+
+
+
+
+
+pub fn remap_rows(
+	rowvec: &arrayfire::Array<i32>,
+    idxsel: &arrayfire::Array<i32>,
+    row_num: u64
+    ) -> arrayfire::Array<i32>
+{
+    let table_dims = arrayfire::Dim4::new(&[row_num,1,1,1]);
+    let mut table = arrayfire::constant::<i32>(0,table_dims);
+
+
+
+
+
+    let single = arrayfire::Dim4::new(&[1,1,1,1]);
+    
+    let mut indexarr = arrayfire::iota::<i32>(idxsel.dims(),single);
+
+
+
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(idxsel, 0, None);
+    arrayfire::assign_gen(&mut table, &idxrs, &indexarr);
+
+
+
+    arrayfire::lookup(&table, rowvec, 0)
+}
+
+
+
+
+
