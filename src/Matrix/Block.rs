@@ -100,7 +100,7 @@ pub fn matmul_loop<Z: arrayfire::FloatingPoint>(
 
     let outputarr_dims = arrayfire::Dim4::new(&[1,block.dims()[1],1,1]);
 
-    let mut outputarr = arrayfire::constant::<Z>(0.0,outputarr_dims);
+    let mut outputarr = arrayfire::constant::<f64>(0.0,outputarr_dims).cast::<Z>();
     for ii in 0..input_start.len()
     {
         istart = input_start[ii];
@@ -321,7 +321,7 @@ pub fn trans_matmul_loop<Z: arrayfire::FloatingPoint>(
 
     let outputarr_dims = arrayfire::Dim4::new(&[1,block.dims()[1],1,1]);
 
-    let mut outputarr = arrayfire::constant::<Z>(0.0,outputarr_dims);
+    let mut outputarr = arrayfire::constant::<f64>(0.0,outputarr_dims).cast::<Z>();
     for ii in 0..pointer_start.len()
     {
         istart = pointer_start[ii];
