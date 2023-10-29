@@ -21,7 +21,7 @@ arrayfire = { version = "3.8.1", package = "arrayfire_fork" }
 num = "0.4.1"
 num-traits = "0.2.16"
 half = { version = "2.3.1" , features = ["num-traits"] }
-RayBNN_Sparse = "0.1.3"
+RayBNN_Sparse = "0.1.4"
 ```
 
 
@@ -160,5 +160,21 @@ RayBNN_Sparse::Matrix::Block::trans_matmul::<f64>(
 
     &input,
     &block
+);
+```
+
+
+
+
+
+
+# Parallel lookup of Arrays
+```
+let result =  RayBNN_Sparse::Util::Search::parallel_lookup(
+    0,
+    1,
+
+    &idx_arr,
+    &test_arr,
 );
 ```
