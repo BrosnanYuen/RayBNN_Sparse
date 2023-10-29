@@ -131,11 +131,11 @@ pub fn find_unique<Z: arrayfire::IndexableType>(
 
 
 
-pub fn parallel_lookup<Z: arrayfire::HasAfEnum>(
+pub fn parallel_lookup<Z: arrayfire::HasAfEnum, V: arrayfire::IndexableType>(
 	batch_dim: u64,
 	lookup_dim: u64,
 
-	idx: &arrayfire::Array<u32>,
+	idx: &arrayfire::Array<V>,
 	target: &arrayfire::Array<Z>,
 ) ->  arrayfire::Array<Z>
 {
@@ -151,9 +151,9 @@ pub fn parallel_lookup<Z: arrayfire::HasAfEnum>(
 
 	tile_dims[batch_dim as usize] = batch_num;
 
-	let count =  arrayfire::iota::<u32>(tile_dims,repeat_dims);
+	let count =  arrayfire::iota::<u64>(tile_dims,repeat_dims);
 
-	let mut idx2 = batch_num*idx.clone();
+	let mut idx2 = batch_num*idx.clone().cast::<u64>();
 	
 	idx2 = arrayfire::add(&idx2, &count, true);
 
