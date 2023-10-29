@@ -151,9 +151,11 @@ pub fn parallel_lookup<Z: arrayfire::HasAfEnum, V: arrayfire::IndexableType>(
 
 	tile_dims[batch_dim as usize] = batch_num;
 
-	let count =  arrayfire::iota::<u64>(tile_dims,repeat_dims);
+	let count =  arrayfire::iota::<V>(tile_dims,repeat_dims);
 
-	let mut idx2 = batch_num*idx.clone().cast::<u64>();
+    let batch_num_V = arrayfire::constant::<u64>(batch_num,repeat_dims).cast::<V>();
+
+	let mut idx2 = batch_num_V*idx.clone();
 	
 	idx2 = arrayfire::add(&idx2, &count, true);
 
