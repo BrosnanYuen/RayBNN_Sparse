@@ -131,13 +131,13 @@ pub fn find_unique<Z: arrayfire::IndexableType>(
 
 
 
-pub fn parallel_lookup(
+pub fn parallel_lookup<Z: arrayfire::HasAfEnum>(
 	batch_dim: u64,
 	lookup_dim: u64,
 
 	idx: &arrayfire::Array<u32>,
-	target: &arrayfire::Array<u32>,
-) ->  arrayfire::Array<u32>
+	target: &arrayfire::Array<Z>,
+) ->  arrayfire::Array<Z>
 {
 
 	let target_dims = target.dims();
