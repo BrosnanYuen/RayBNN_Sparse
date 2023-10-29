@@ -133,4 +133,74 @@ fn test_search2() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	let test_cpu: Vec<f64> = vec![0.3, 0.1, 0.5, 0.9, 0.8, 0.7, -0.1,             2.3, 2.1, 2.5, 2.9, 2.8, 2.7, -2.1,              5.3, 5.1, 5.5, 5.9, 5.8, 5.7, -5.1,           9.3, 9.1, 9.5, 9.9, 9.8, 9.7, -9.1,    ];
+	let mut test_arr = arrayfire::Array::new(&test_cpu, arrayfire::Dim4::new(&[7, 4, 1, 1]));
+
+	test_arr = arrayfire::transpose(&test_arr, false);
+
+    test_arr = arrayfire::reorder_v2(&test_arr, 0, 2, Some(vec![1]));
+
+
+	let idx_cpu: Vec<u32> = vec![6,3,5,1,0,      1,4,2,4,1,     2,0,3,1,4,    5,2,6,1,2];
+	let mut idx_arr = arrayfire::Array::new(&idx_cpu, arrayfire::Dim4::new(&[5, 4, 1, 1]));
+
+	idx_arr = arrayfire::transpose(&idx_arr, false);
+
+    idx_arr = arrayfire::reorder_v2(&idx_arr, 0, 2, Some(vec![1]));
+
+
+	let result = RayBNN_Sparse::Util::Search::parallel_lookup(
+		0,
+		2,
+	
+		&idx_arr,
+		&test_arr,
+	);
+
+
+
+	let actual_cpu: Vec<f64> = vec![ -0.1, 0.9, 0.7,  0.1 ,  0.3,            2.1, 2.8, 2.5, 2.8,2.1,       5.5, 5.3, 5.9, 5.1, 5.8,           9.7,  9.5, -9.1, 9.1, 9.5];
+	let mut actual = arrayfire::Array::new(&actual_cpu, arrayfire::Dim4::new(&[5, 4, 1, 1]));
+
+	actual = arrayfire::transpose(&actual, false);
+
+    actual = arrayfire::reorder_v2(&actual, 0, 2, Some(vec![1]));
+
+
+	let mut actual_cpu = vec!(f64::default();actual.elements());
+
+    actual.host(&mut actual_cpu);
+
+
+    let mut result_cpu = vec!(f64::default();result.elements());
+
+    result.host(&mut result_cpu);
+
+    assert_eq!( actual_cpu, result_cpu);
+
+
+
+
+
 }
