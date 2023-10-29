@@ -167,14 +167,14 @@ pub fn parallel_lookup(
 
 	idx2 = arrayfire::flat(&idx2);
 
-	let mut ouput_arr = arrayfire::flat(target);
+	let mut output_arr = arrayfire::flat(target);
 
-	ouput_arr = arrayfire::lookup(&ouput_arr, &idx2, 0);
+	output_arr = arrayfire::lookup(&output_arr, &idx2, 0);
 
 
 	drop(idx2);
 	
-	arrayfire::moddims(&ouput_arr, idx.dims())
+	arrayfire::moddims(&output_arr, idx.dims())
 }
 
 
