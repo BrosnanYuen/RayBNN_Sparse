@@ -203,4 +203,69 @@ fn test_search2() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+	let test_cpu: Vec<u32> = vec![3, 1, 5, 9, 8, 7, 6,             23, 21, 25, 29, 28, 27, 26,              53, 51, 55, 59, 58, 57, 56,           93, 91, 95, 99, 98, 97, 96,    ];
+	let mut test_arr = arrayfire::Array::new(&test_cpu, arrayfire::Dim4::new(&[7, 4, 1, 1]));
+
+	test_arr = arrayfire::transpose(&test_arr, false);
+
+
+	let idx_cpu: Vec<u32> = vec![6,3,5,1,0,      1,4,2,4,1,     2,0,3,1,4,    5,2,6,1,2];
+	let mut idx_arr = arrayfire::Array::new(&idx_cpu, arrayfire::Dim4::new(&[5, 4, 1, 1]));
+
+	idx_arr = arrayfire::transpose(&idx_arr, false);
+
+	let result =  RayBNN_Sparse::Util::Search::parallel_lookup(
+		0,
+		1,
+	
+		&idx_arr,
+		&test_arr,
+	);
+
+
+
+	let actual_cpu: Vec<u32> = vec![ 6, 9, 7,  1 ,  3,            21, 28, 25, 28,21,       55, 53, 59, 51, 58,           97,  95, 96, 91, 95];
+	let mut actual = arrayfire::Array::new(&actual_cpu, arrayfire::Dim4::new(&[5, 4, 1, 1]));
+
+	actual = arrayfire::transpose(&actual, false);
+
+
+	let mut actual_cpu = vec!(u32::default();actual.elements());
+
+    actual.host(&mut actual_cpu);
+
+
+    let mut result_cpu = vec!(u32::default();result.elements());
+
+    result.host(&mut result_cpu);
+
+    assert_eq!( actual_cpu, result_cpu);
+
+
+
+
+
 }
