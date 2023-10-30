@@ -294,9 +294,9 @@ pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
 
 
 
-    let colseq = arrayfire::Seq::new(0.0, (space_dims-1) as f64, 1.0);
+    let colseq = arrayfire::Seq::new(0, (space_dims-1) as i32, 1);
 
-    let mut temparr = arrayfire::constant::<f64>(0.0,arrayfire::Dim4::new(&[neuron_size,space_dims,1,1]));
+    let mut temparr = arrayfire::constant::<f64>(ZERO_F64,arrayfire::Dim4::new(&[neuron_size,space_dims,1,1])).cast::<Z>();
 
     let idx = neuron_idx.clone();
 
