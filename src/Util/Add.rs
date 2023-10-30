@@ -14,7 +14,7 @@ use rand::seq::SliceRandom;
 
 use rayon::prelude::*;
 
-const EPS_F64: f64 = 1e-10;
+const EPS_f64: f64 = 1e-10;
 
 
 
@@ -100,16 +100,16 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
 	}
 
     let mut rng = rand::thread_rng();
-    let choose_connection = Uniform::from(0.0..1.0f64);
+    let choose_connection = Uniform::from(0.0..1.0f32);
     //let value_range = Uniform::from(-min_val..min_val);
 
-    let p1 = (input_size as f64)/(neuron_num as f64);
-    let p2 = ((input_size + hidden_idx.dims()[0]) as f64)/(neuron_num as f64);
+    let p1 = (input_size as f32)/(neuron_num as f32);
+    let p2 = ((input_size + hidden_idx.dims()[0]) as f32)/(neuron_num as f32);
 
 
     let mut new_value = vec!(Z::default();1);
     let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
-    let EPS = arrayfire::constant::<f64>(EPS_F64,single_dims).cast::<Z>();
+    let EPS = arrayfire::constant::<f64>(EPS_f64,single_dims).cast::<Z>();
 
 
     let mut add_counter = 0;
