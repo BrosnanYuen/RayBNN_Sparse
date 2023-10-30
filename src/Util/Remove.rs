@@ -10,7 +10,7 @@ const TWO_F64: f64 = 2.0;
 const ONE_F64: f64 = 1.0;
 const ZERO_F64: f64 = 0.0;
 
-
+const COO_FIND_LIMIT: u64 = 1500000000;
 
 
 
@@ -377,7 +377,7 @@ pub fn delete_neurons_at_idx(
 ){
 
 
-    let COO_batch_size = 1 + ((COO_find_limit/WColIdx.dims()[0]) as u64);
+    let COO_batch_size = 1 + ((COO_FIND_LIMIT/WColIdx.dims()[0]) as u64);
     let valsel = COO_batch_find(WColIdx,&delete_idx, COO_batch_size);
 
 
