@@ -248,3 +248,108 @@ pub fn delete_weights_with_prob<Z: arrayfire::FloatingPoint>(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+pub fn select_forward_sphere(
+    netdata: &network_metadata_type,
+    WValues: &mut arrayfire::Array<f64>,
+    WRowIdxCOO: &mut arrayfire::Array<i32>,
+    WColIdx: &mut arrayfire::Array<i32>,
+    neuron_pos: &arrayfire::Array<f64>,
+    neuron_idx: &arrayfire::Array<i32>
+){
+    let neuron_size: u64 = netdata.neuron_size.clone();
+	let input_size: u64 = netdata.input_size.clone();
+	let output_size: u64 = netdata.output_size.clone();
+    let space_dims: u64 = netdata.space_dims.clone();
+
+
+
+
+
+
+
+    let colseq = arrayfire::Seq::new(0.0, (space_dims-1) as f64, 1.0);
+
+    let mut temparr = arrayfire::constant::<f64>(0.0,arrayfire::Dim4::new(&[neuron_size,space_dims,1,1]));
+
+    let idx = neuron_idx.clone();
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&idx, 0, None);
+	idxrs.set_index(&colseq, 1, Some(false));
+    arrayfire::assign_gen(&mut temparr, &idxrs, neuron_pos);
+
+
+
+
+
+
+
+
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(WRowIdxCOO, 0, None);
+	idxrs.set_index(&colseq, 1, Some(false));
+    let row_neuron_pos = arrayfire::index_gen(&temparr, idxrs);
+
+	let mut row_magsq = arrayfire::pow(&row_neuron_pos,&two,false);
+	row_magsq = arrayfire::sum(&row_magsq, 1);
+
+
+
+
+
+
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(WColIdx, 0, None);
+	idxrs.set_index(&colseq, 1, Some(false));
+    let col_neuron_pos = arrayfire::index_gen(&temparr, idxrs);
+
+	let mut col_magsq = arrayfire::pow(&col_neuron_pos,&two,false);
+	col_magsq = arrayfire::sum(&col_magsq, 1);
+
+
+
+
+
+
+    //let cmp1 = (WRowIdxCOO < WColIdx);
+    let cmp1 = arrayfire::lt(&row_magsq ,&col_magsq, false);
+
+	let sel = arrayfire::locate(&cmp1);
+
+    select_values(
+            WValues,
+            WRowIdxCOO,
+            WColIdx,
+            &sel
+    	);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
