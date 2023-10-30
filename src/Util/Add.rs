@@ -1,7 +1,7 @@
 use arrayfire;
 use half;
 
-use crate::Util::Search::find_unique;
+use crate::Util::Convert::get_global_weight_idx;
 
 use std::collections::HashMap;
 
