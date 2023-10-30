@@ -368,4 +368,50 @@ pub fn select_forward_sphere<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >
 
 
 
+pub fn delete_neurons_at_idx(
+    delete_idx: &arrayfire::Array<i32>,
+
+    WValues: &mut arrayfire::Array<f64>,
+    WRowIdxCOO: &mut arrayfire::Array<i32>,
+    WColIdx: &mut arrayfire::Array<i32>
+){
+
+
+    let COO_batch_size = 1 + ((COO_find_limit/WColIdx.dims()[0]) as u64);
+    let valsel = COO_batch_find(WColIdx,&delete_idx, COO_batch_size);
+
+
+
+
+
+    let mut temparr = arrayfire::constant::<bool>(true,WColIdx.dims());
+
+    let ones = arrayfire::constant::<bool>(false,valsel.dims());
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&valsel, 0, None);
+    arrayfire::assign_gen(&mut temparr, &idxrs, &ones);
+
+
+
+
+
+    let valsel2 = arrayfire::locate(&temparr);
+
+    select_values(
+        WValues,
+        WRowIdxCOO,
+        WColIdx,
+        &valsel2
+    );
+
+}
+
+
+
+
+
+
+
+
 
