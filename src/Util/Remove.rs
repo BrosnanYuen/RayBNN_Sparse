@@ -4,6 +4,16 @@ use half;
 use crate::Util::Search::find_unique;
 use std::collections::HashMap;
 
+
+
+const TWO_F64: f64 = 2.0;
+const ONE_F64: f64 = 1.0;
+const ZERO_F64: f64 = 0.0;
+
+
+
+
+
 pub fn select_values<Z: arrayfire::FloatingPoint>(
     WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
@@ -259,7 +269,7 @@ pub fn delete_weights_with_prob<Z: arrayfire::FloatingPoint>(
 
 
 
-pub fn select_forward_sphere(
+pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
     modeldata_int: &HashMap<String, u64>,
 
     WValues: &mut arrayfire::Array<f64>,
@@ -268,6 +278,9 @@ pub fn select_forward_sphere(
     neuron_pos: &arrayfire::Array<f64>,
     neuron_idx: &arrayfire::Array<i32>
 ){
+
+    let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	let TWO = arrayfire::constant::<f64>(TWO_F64,single_dims).cast::<Z>();
 
 
     let neuron_size: u64 = modeldata_int["neuron_size"].clone();
