@@ -7,6 +7,10 @@ use std::collections::HashMap;
 
 use nohash_hasher;
 
+use rand::distributions::{Distribution, Uniform};
+
+
+
 
 
 pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
