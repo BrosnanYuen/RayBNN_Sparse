@@ -75,14 +75,14 @@ fn test_Remove5() {
     );
 
 
-
-    clusterdiffeq::graph::adjacency_f64::select_forward_sphere(
+    RayBNN_Sparse::Util::Remove::select_forward_sphere(
         &netdata, 
         &mut WValues, 
         &mut WRowIdxCOO, 
         &mut WColIdx, 
         &neuron_pos, 
-        &neuron_idx);
+        &neuron_idx
+    );
 
 
 
