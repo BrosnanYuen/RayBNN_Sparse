@@ -288,12 +288,6 @@ pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
     let output_size: u64 = modeldata_int["output_size"].clone();
     let space_dims: u64 = modeldata_int["space_dims"].clone();
 
-    /* 
-    let neuron_size: u64 = netdata.neuron_size.clone();
-	let input_size: u64 = netdata.input_size.clone();
-	let output_size: u64 = netdata.output_size.clone();
-    let space_dims: u64 = netdata.space_dims.clone();
-    */
 
 
 
