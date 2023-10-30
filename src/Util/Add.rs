@@ -101,7 +101,7 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
 
     let mut rng = rand::thread_rng();
     let choose_connection = Uniform::from(0.0..1.0f32);
-    //let value_range = Uniform::from(-min_val..min_val);
+    
 
     let p1 = (input_size as f32)/(neuron_num as f32);
     let p2 = ((input_size + hidden_idx.dims()[0]) as f32)/(neuron_num as f32);
