@@ -38,20 +38,7 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
     let step_num: u64 = modeldata_int["step_num"].clone();
     let batch_size: u64 = modeldata_int["batch_size"].clone();
 
-    /* 
-	let neuron_size: u64 = netdata.neuron_size.clone();
-	let input_size: u64 = netdata.input_size.clone();
-	let output_size: u64 = netdata.output_size.clone();
-	let proc_num: u64 = netdata.proc_num.clone();
-	let active_size: u64 = netdata.active_size.clone();
-	let space_dims: u64 = netdata.space_dims.clone();
-	let step_num: u64 = netdata.step_num.clone();
-	let batch_size: u64 = netdata.batch_size.clone();
-    */
-
-    let mut abs = arrayfire::abs(&WValues);
-    let (min_val,_) = arrayfire::min_all(&abs);
-
+    
 
 	//Compute global index
 	let mut gidx1 = get_global_weight_idx(
@@ -66,7 +53,7 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
 
 
 
-	let mut WValues_cpu = vec!(f64::default();WValues.elements());
+	let mut WValues_cpu = vec!(Z::default();WValues.elements());
     WValues.host(&mut WValues_cpu);
 
 	let mut WRowIdxCOO_cpu = vec!(i32::default();WRowIdxCOO.elements());
