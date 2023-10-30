@@ -3,13 +3,15 @@ use half;
 
 use crate::Util::Search::find_unique;
 
+use std::collections::HashMap;
 
 
 
 
 
 pub fn add_random_weights(
-    netdata: &network_metadata_type,
+    modeldata_float: &HashMap<String, f64>,
+    modeldata_int: &HashMap<String, u64>,
 
     neuron_idx: &arrayfire::Array<i32>,
 
