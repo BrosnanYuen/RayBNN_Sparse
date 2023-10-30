@@ -99,10 +99,14 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
 
     let mut rng = rand::thread_rng();
     let choose_connection = Uniform::from(0.0..1.0f64);
-    let value_range = Uniform::from(-min_val..min_val);
+    //let value_range = Uniform::from(-min_val..min_val);
 
     let p1 = (input_size as f64)/(neuron_num as f64);
     let p2 = ((input_size + hidden_idx.dims()[0]) as f64)/(neuron_num as f64);
+
+
+    let mut new_value = vec!(Z::default();1);
+    let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 
     let mut add_counter = 0;
     while 1==1
@@ -135,8 +139,10 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
         let cur_gidx = ((cur_rows as u64)*(neuron_size)) +  (cur_cols as u64);
         if join_WValues.contains_key(&cur_gidx) == false
         {
-            let new_value = value_range.sample(&mut rng);
-            join_WValues.insert(cur_gidx, new_value);
+            let new_value_Z = arrayfire::randn::<Z>(single_dims);
+            new_value_Z.host(&mut new_value);
+
+            join_WValues.insert(cur_gidx, new_value[0].clone());
             join_WColIdx.insert(cur_gidx, cur_cols.clone());
 		    join_WRowIdxCOO.insert(cur_gidx, cur_rows.clone());
 
