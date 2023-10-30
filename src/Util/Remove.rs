@@ -369,10 +369,10 @@ pub fn select_forward_sphere<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >
 
 
 
-pub fn delete_neurons_at_idx(
+pub fn delete_neurons_at_idx<Z: arrayfire::FloatingPoint >(
     delete_idx: &arrayfire::Array<i32>,
 
-    WValues: &mut arrayfire::Array<f64>,
+    WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>
 ){
