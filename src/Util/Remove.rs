@@ -2,6 +2,7 @@ use arrayfire;
 use half;
 
 use crate::Util::Search::find_unique;
+use crate::Util::Search::COO_batch_find;
 use std::collections::HashMap;
 
 
