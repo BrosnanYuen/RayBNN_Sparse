@@ -14,6 +14,8 @@ use rand::seq::SliceRandom;
 
 use rayon::prelude::*;
 
+const EPS_F64: f64 = 1e-10;
+
 
 
 pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
@@ -107,6 +109,8 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
 
     let mut new_value = vec!(Z::default();1);
     let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+    let EPS = arrayfire::constant::<f64>(EPS_F64,single_dims).cast::<Z>();
+
 
     let mut add_counter = 0;
     while 1==1
@@ -139,7 +143,7 @@ pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
         let cur_gidx = ((cur_rows as u64)*(neuron_size)) +  (cur_cols as u64);
         if join_WValues.contains_key(&cur_gidx) == false
         {
-            let new_value_Z = arrayfire::randn::<Z>(single_dims);
+            let new_value_Z = EPS.clone()*arrayfire::randn::<Z>(single_dims);
             new_value_Z.host(&mut new_value);
 
             join_WValues.insert(cur_gidx, new_value[0].clone());
