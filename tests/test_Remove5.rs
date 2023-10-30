@@ -7,8 +7,8 @@ use RayBNN_DataLoader;
 const BACK_END: arrayfire::Backend = arrayfire::Backend::CUDA;
 const DEVICE: i32 = 0;
 
-
-
+use std::collections::HashMap;
+use rayon::prelude::*;
 
 #[test]
 fn test_Remove5() {
@@ -36,30 +36,15 @@ fn test_Remove5() {
 
 
 
-	let netdata: clusterdiffeq::neural::network_f64::network_metadata_type = clusterdiffeq::neural::network_f64::network_metadata_type {
-		neuron_size: neuron_size,
-	    input_size: 3,
-		output_size: 2,
-		proc_num: 3,
-		active_size: neuron_size,
-		space_dims: 3,
-		step_num: 100,
-        batch_size: 1,
-		del_unused_neuron: true,
 
-		time_step: 0.1,
-		nratio: 0.5,
-		neuron_std: 0.3,
-		sphere_rad: 0.9,
-		neuron_rad: 0.1,
-		con_rad: 0.6,
-        init_prob: 0.5,
-        add_neuron_rate: 0.0,
-		del_neuron_rate: 0.0,
-		center_const: 0.005,
-		spring_const: 0.01,
-		repel_const: 10.0
-	};
+    let mut modeldata_int: HashMap<String, u64>  = HashMap::new();
+
+    modeldata_int.insert("neuron_size".to_string(), neuron_size.clone());
+    modeldata_int.insert("input_size".to_string(), 3);
+    modeldata_int.insert("output_size".to_string(), 2);
+    modeldata_int.insert("space_dims".to_string(), 3);
+
+
 
     let neuron_idx_dims = arrayfire::Dim4::new(&[1,13,1,1]);
     let mut neuron_idx = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<i32>(
@@ -76,7 +61,7 @@ fn test_Remove5() {
 
 
     RayBNN_Sparse::Util::Remove::select_forward_sphere(
-        &netdata, 
+        &modeldata_int, 
         &mut WValues, 
         &mut WRowIdxCOO, 
         &mut WColIdx, 
