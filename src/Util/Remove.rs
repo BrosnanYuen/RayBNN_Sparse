@@ -272,10 +272,10 @@ pub fn delete_weights_with_prob<Z: arrayfire::FloatingPoint>(
 pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
     modeldata_int: &HashMap<String, u64>,
 
-    WValues: &mut arrayfire::Array<f64>,
+    WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>,
-    neuron_pos: &arrayfire::Array<f64>,
+    neuron_pos: &arrayfire::Array<Z>,
     neuron_idx: &arrayfire::Array<i32>
 ){
 
