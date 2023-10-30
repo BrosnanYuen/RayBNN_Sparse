@@ -10,11 +10,13 @@ use nohash_hasher;
 use rand::distributions::{Distribution, Uniform};
 
 
+use rand::seq::SliceRandom;
+
+use rayon::prelude::*;
 
 
 
 pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
-    modeldata_float: &HashMap<String, f64>,
     modeldata_int: &HashMap<String, u64>,
 
     neuron_idx: &arrayfire::Array<i32>,
