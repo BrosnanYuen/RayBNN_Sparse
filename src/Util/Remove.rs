@@ -269,7 +269,7 @@ pub fn delete_weights_with_prob<Z: arrayfire::FloatingPoint>(
 
 
 
-pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
+pub fn select_forward_sphere<Z: arrayfire::FloatingPoint<AggregateOutType = Z> >(
     modeldata_int: &HashMap<String, u64>,
 
     WValues: &mut arrayfire::Array<Z>,
@@ -346,11 +346,11 @@ pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
 	let sel = arrayfire::locate(&cmp1);
 
     select_values(
-            WValues,
-            WRowIdxCOO,
-            WColIdx,
-            &sel
-    	);
+        WValues,
+        WRowIdxCOO,
+        WColIdx,
+        &sel
+    );
 
 }
 
