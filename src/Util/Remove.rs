@@ -185,15 +185,7 @@ pub fn delete_weights_with_prob<Z: arrayfire::FloatingPoint>(
 {
 
     let WValues_num  = WValues.dims()[0];
-    //let mut abs = arrayfire::abs(&WValues);
-
-
-    //let randarr = arrayfire::randu::<f64>(abs.dims());
-    //abs = arrayfire::mul(&abs, &randarr, false);
-
-
-    //Sort to find small weights
-    //let (_,mut idx) = arrayfire::sort_index(&abs, 0, false);
+    
 
 
 
