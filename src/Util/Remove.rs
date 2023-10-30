@@ -318,7 +318,7 @@ pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
 	idxrs.set_index(&colseq, 1, Some(false));
     let row_neuron_pos = arrayfire::index_gen(&temparr, idxrs);
 
-	let mut row_magsq = arrayfire::pow(&row_neuron_pos,&two,false);
+	let mut row_magsq = arrayfire::pow(&row_neuron_pos,&TWO,false);
 	row_magsq = arrayfire::sum(&row_magsq, 1);
 
 
@@ -332,7 +332,7 @@ pub fn select_forward_sphere<Z: arrayfire::FloatingPoint>(
 	idxrs.set_index(&colseq, 1, Some(false));
     let col_neuron_pos = arrayfire::index_gen(&temparr, idxrs);
 
-	let mut col_magsq = arrayfire::pow(&col_neuron_pos,&two,false);
+	let mut col_magsq = arrayfire::pow(&col_neuron_pos,&TWO,false);
 	col_magsq = arrayfire::sum(&col_magsq, 1);
 
 
