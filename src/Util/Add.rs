@@ -9,13 +9,13 @@ use std::collections::HashMap;
 
 
 
-pub fn add_random_weights(
+pub fn add_random_weights<Z: arrayfire::FloatingPoint>(
     modeldata_float: &HashMap<String, f64>,
     modeldata_int: &HashMap<String, u64>,
 
     neuron_idx: &arrayfire::Array<i32>,
 
-    WValues: &mut arrayfire::Array<f64>,
+    WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>,
 
