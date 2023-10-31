@@ -566,16 +566,15 @@ pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
 
 
 
-pub fn delete_smallest_neurons(
+pub fn delete_smallest_neurons<Z: arrayfire::FloatingPoint>(
     modeldata_int: &HashMap<String, u64>,
 
     neuron_idx: &arrayfire::Array<i32>,
     del_num: u64,
     
-    WValues: &mut arrayfire::Array<f64>,
+    WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>,
-
 ){
 
     let neuron_size: u64 = modeldata_int["neuron_size"].clone();
