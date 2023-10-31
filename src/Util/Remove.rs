@@ -642,7 +642,7 @@ pub fn delete_smallest_neurons<Z: arrayfire::FloatingPoint>(
     );
 
 
-    let COO_batch_size = 1 + ((COO_find_limit/WColIdx.dims()[0]) as u64);
+    let COO_batch_size = 1 + ((COO_FIND_LIMIT/WColIdx.dims()[0]) as u64);
 
     let valsel = COO_batch_find(WColIdx,&newkeys, COO_batch_size).cast::<u32>();
 
