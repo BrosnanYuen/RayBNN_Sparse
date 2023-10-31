@@ -566,6 +566,114 @@ pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
 
 
 
+pub fn delete_smallest_neurons(
+    netdata: &network_metadata_type,
+    neuron_idx: &arrayfire::Array<i32>,
+    del_num: u64,
+    
+
+    WValues: &mut arrayfire::Array<f64>,
+    WRowIdxCOO: &mut arrayfire::Array<i32>,
+    WColIdx: &mut arrayfire::Array<i32>,
+
+){
+
+    let neuron_size: u64 = netdata.neuron_size.clone();
+	let input_size: u64 = netdata.input_size.clone();
+	let output_size: u64 = netdata.output_size.clone();
+    let space_dims: u64 = netdata.space_dims.clone();
+
+
+
+	let in_idx = arrayfire::rows(neuron_idx, 0, (input_size-1)  as i64);
+
+	let out_idx = arrayfire::rows(neuron_idx, (neuron_idx.dims()[0]-output_size) as i64, (neuron_idx.dims()[0]-1)  as i64);
+
+
+
+    let (max_in_idx,_) = arrayfire::max_all(&in_idx);
+
+    let (min_out_idx,_) = arrayfire::min_all(&out_idx);
+
+
+	//  (WColIdx > max_in_idx )
+	let mut CMPRET = arrayfire::gt(WColIdx, &max_in_idx, false);
+
+    //  (min_out_idx > WColIdx )
+	let CMP1 = arrayfire::gt(&min_out_idx, WColIdx, false);
+	CMPRET = arrayfire::and(&CMPRET,&CMP1, false);
+
+
+    let selidx = arrayfire::locate(&CMPRET);
+
+    let newWColIdx = arrayfire::lookup(WColIdx, &selidx, 0);
+
+    let newWValues = arrayfire::lookup(WValues, &selidx, 0);
+
+
+    
+
+
+    //let WValues_num  = WValues.dims()[0];
+    let abs = arrayfire::abs(&newWValues);
+
+    let  (keys, values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
+
+
+
+    //Sort to find small neurons
+    let (_,mut idx) = arrayfire::sort_index(&values, 0, false);
+
+    
+    //Select biggest neurons
+    let idxnum = idx.dims()[0];
+    let mut sel = arrayfire::rows(&idx, 0, (idxnum-del_num-1)  as i64);
+
+
+    let mut newkeys = arrayfire::lookup(&keys, &sel, 0);
+
+
+    newkeys = arrayfire::join(0, &in_idx, &newkeys);
+
+
+
+    newkeys = find_unique(
+        &newkeys,
+        neuron_size
+    );
+
+
+    let COO_batch_size = 1 + ((COO_find_limit/WColIdx.dims()[0]) as u64);
+
+    let valsel = COO_batch_find(WColIdx,&newkeys, COO_batch_size).cast::<u32>();
+
+    if (valsel.dims()[0] == 0)
+    {
+        return;
+    }
+
+    if (valsel.dims()[0] == WColIdx.dims()[0])
+    {
+        return;
+    }
+
+
+    //Select COO Matrix
+    select_values(
+        WValues,
+        WRowIdxCOO,
+        WColIdx,
+        &valsel
+    );
+
+
+}
+
+
+
+
+
+
 
 
 
