@@ -433,12 +433,7 @@ pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
     let output_size: u64 = modeldata_int["output_size"].clone();
     let space_dims: u64 = modeldata_int["space_dims"].clone();
 
-    /* 
-    let neuron_size: u64 = netdata.neuron_size.clone();
-    let input_size: u64 = netdata.input_size.clone();
-    let output_size: u64 = netdata.output_size.clone();
-    let space_dims: u64 = netdata.space_dims.clone();
-    */
+    
 
     //Get active non zero cols
     let mut temparr = arrayfire::constant::<bool>(false,arrayfire::Dim4::new(&[neuron_size,1,1,1]));
@@ -465,7 +460,7 @@ pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
 
 
 
-    sel = find_unique_i32(
+    sel = find_unique(
         &sel,
         neuron_size
     );
@@ -479,7 +474,7 @@ pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
 
 
 
-    let COO_batch_size = 1 + ((COO_find_limit/WRowIdxCOO.dims()[0]) as u64);
+    let COO_batch_size = 1 + ((COO_FIND_LIMIT/WRowIdxCOO.dims()[0]) as u64);
 
     let valsel = COO_batch_find(WRowIdxCOO,&sel, COO_batch_size).cast::<u32>();
 
@@ -496,11 +491,11 @@ pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
 
 
     select_values(
-            WValues,
-            WRowIdxCOO,
-            WColIdx,
-            &valsel
-        );
+        WValues,
+        WRowIdxCOO,
+        WColIdx,
+        &valsel
+    );
 
 
     let mut temparr = arrayfire::constant::<f64>(0.0,arrayfire::Dim4::new(&[neuron_size,space_dims,1,1]));
