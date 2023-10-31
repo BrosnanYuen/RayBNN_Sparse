@@ -628,7 +628,10 @@ pub fn delete_smallest_neurons<Z: arrayfire::FloatingPoint>(
     }
     else 
     {
-
+        let abs = arrayfire::abs(&newWValues).cast::<f32>();
+        let mut values = abs.clone();
+        (keys, values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
+        (_, idx) = arrayfire::sort_index(&values, 0, false);   
     }
 
 
