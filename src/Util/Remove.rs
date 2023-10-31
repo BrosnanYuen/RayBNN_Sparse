@@ -416,3 +416,142 @@ pub fn delete_neurons_at_idx<Z: arrayfire::FloatingPoint >(
 
 
 
+pub fn delete_unused_neurons(
+    netdata: &network_metadata_type,
+    WValues: &mut arrayfire::Array<f64>,
+    WRowIdxCOO: &mut arrayfire::Array<i32>,
+    WColIdx: &mut arrayfire::Array<i32>,
+    glia_pos: &mut arrayfire::Array<f64>,
+    neuron_pos: &mut arrayfire::Array<f64>,
+    neuron_idx: &mut arrayfire::Array<i32>
+){
+    let neuron_size: u64 = netdata.neuron_size.clone();
+    let input_size: u64 = netdata.input_size.clone();
+    let output_size: u64 = netdata.output_size.clone();
+    let space_dims: u64 = netdata.space_dims.clone();
+
+    //Get active non zero cols
+    let mut temparr = arrayfire::constant::<bool>(false,arrayfire::Dim4::new(&[neuron_size,1,1,1]));
+
+    let ones = arrayfire::constant::<bool>(true,WColIdx.dims());
+
+    let idx = WColIdx.clone();
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&idx, 0, None);
+    arrayfire::assign_gen(&mut temparr, &idxrs, &ones);
+
+
+
+
+
+
+    //Get all non zero index of col
+    let mut sel = arrayfire::locate(&temparr).cast::<i32>();
+
+    let active_size = neuron_idx.dims()[0];
+    let output_idx = arrayfire::rows(neuron_idx, (active_size-output_size)  as i64, (active_size-1)   as i64);
+    //Add output neurons to index
+    sel = arrayfire::join(0, &sel, &output_idx);
+
+
+
+    sel = find_unique_i32(
+        &sel,
+        neuron_size
+    );
+
+
+
+    let update_neuron_idx = sel.clone();
+
+
+
+
+
+
+    let COO_batch_size = 1 + ((COO_find_limit/WRowIdxCOO.dims()[0]) as u64);
+
+    let valsel = COO_batch_find(WRowIdxCOO,&sel, COO_batch_size).cast::<u32>();
+
+    if (valsel.dims()[0] == WRowIdxCOO.dims()[0])
+    {
+        return;
+    }
+
+
+
+
+
+
+
+
+    select_values(
+            WValues,
+            WRowIdxCOO,
+            WColIdx,
+            &valsel
+        );
+
+
+    let mut temparr = arrayfire::constant::<f64>(0.0,arrayfire::Dim4::new(&[neuron_size,space_dims,1,1]));
+
+    let seq1 = arrayfire::Seq::new(0.0, (space_dims-1) as f64, 1.0);
+    let idx = neuron_idx.clone();
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&idx, 0, None);
+    idxrs.set_index(&seq1, 1, Some(false));
+    arrayfire::assign_gen(&mut temparr, &idxrs, neuron_pos);
+
+
+
+
+
+
+
+
+
+
+    let mut temparr2 = arrayfire::constant::<bool>(false,arrayfire::Dim4::new(&[neuron_size,1,1,1]));
+    let ones = arrayfire::constant::<bool>(true,idx.dims());
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&idx, 0, None);
+    arrayfire::assign_gen(&mut temparr2, &idxrs, &ones);
+
+
+
+    let zeros = arrayfire::constant::<bool>(false,sel.dims());
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&sel, 0, None);
+    arrayfire::assign_gen(&mut temparr2, &idxrs, &zeros);
+
+    let new_glia_idx = arrayfire::locate(&temparr2);
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&new_glia_idx, 0, None);
+    idxrs.set_index(&seq1, 1, Some(false));
+    let new_glia_pos = arrayfire::index_gen(&temparr, idxrs);
+
+    *glia_pos = arrayfire::join(0, glia_pos, &new_glia_pos);
+
+
+
+
+
+
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&sel, 0, None);
+    idxrs.set_index(&seq1, 1, Some(false));
+    *neuron_pos = arrayfire::index_gen(&temparr, idxrs);
+
+
+
+
+    *neuron_idx = update_neuron_idx;
+}
+
+
+
+
+
