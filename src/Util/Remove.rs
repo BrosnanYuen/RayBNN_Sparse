@@ -416,15 +416,15 @@ pub fn delete_neurons_at_idx<Z: arrayfire::FloatingPoint >(
 
 
 
-pub fn delete_unused_neurons(
+pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
     modeldata_int: &HashMap<String, u64>,
 
 
-    WValues: &mut arrayfire::Array<f64>,
+    WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>,
-    glia_pos: &mut arrayfire::Array<f64>,
-    neuron_pos: &mut arrayfire::Array<f64>,
+    glia_pos: &mut arrayfire::Array<Z>,
+    neuron_pos: &mut arrayfire::Array<Z>,
     neuron_idx: &mut arrayfire::Array<i32>
 ){
 
