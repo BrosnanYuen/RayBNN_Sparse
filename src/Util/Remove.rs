@@ -615,14 +615,12 @@ pub fn delete_smallest_neurons<Z: arrayfire::FloatingPoint>(
 
     //let WValues_num  = WValues.dims()[0];
     let abs = arrayfire::abs(&newWValues);
-
     let  (keys, values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
-
-
-
-    //Sort to find small neurons
     let (_,mut idx) = arrayfire::sort_index(&values, 0, false);
 
+
+
+    
     
     //Select biggest neurons
     let idxnum = idx.dims()[0];
