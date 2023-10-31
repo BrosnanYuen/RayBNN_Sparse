@@ -202,6 +202,43 @@ fn test_Remove5() {
 
 
 
+    let mut neuron_idx_cpu:Vec<i32> = vec![ 4, 6, 7, 11, 12, 31, 34];
+    let mut neuron_idx = arrayfire::Array::new(&neuron_idx_cpu, arrayfire::Dim4::new(&[7, 1, 1, 1]));
+
+
+    let mut sel_idx_cpu:Vec<i32> = vec![ 6,  11, 31];
+    let mut sel_idx = arrayfire::Array::new(&sel_idx_cpu, arrayfire::Dim4::new(&[3, 1, 1, 1]));
+
+
+    let mut neuron_pos_cpu:Vec<f64> = vec![ 0.1, -0.7, 7.3,            -1.0, 0.4, 1.7,               1.3, 4.2, 0.9,            7.5, 2.7, 2.1,            9.3,0.6,1.2,         5.3,4.0,-1.2,     -1.3,3.6,1.2];
+    let mut neuron_pos = arrayfire::Array::new(&neuron_pos_cpu, arrayfire::Dim4::new(&[3, 7, 1, 1]));
+
+    neuron_pos = arrayfire::transpose(&neuron_pos, false);
+
+
+    RayBNN_Sparse::Util::Remove::select_neurons(
+        &sel_idx,
+        40,
+        &mut neuron_pos,
+        &mut neuron_idx
+    );
+
+
+
+    neuron_pos = arrayfire::transpose(&neuron_pos, false);
+
+    let mut neuron_pos_act:Vec<f64> = vec![  -1.0, 0.4, 1.7,                 7.5, 2.7, 2.1,            5.3,4.0,-1.2 ];
+
+    let mut neuron_pos_cpu = vec!(f64::default();neuron_pos.elements());
+    neuron_pos.host(&mut neuron_pos_cpu);
+
+    neuron_pos_act = neuron_pos_act.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+
+    neuron_pos_cpu = neuron_pos_cpu.par_iter().map(|x|  (x * 1000000.0).round() / 1000000.0 ).collect::<Vec<f64>>();
+
+    assert_eq!(neuron_pos_act, neuron_pos_cpu);
+
+
 
 
 

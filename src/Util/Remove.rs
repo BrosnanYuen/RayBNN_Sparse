@@ -560,3 +560,45 @@ pub fn delete_unused_neurons<Z: arrayfire::FloatingPoint>(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+pub fn select_neurons<Z: arrayfire::FloatingPoint>(
+    sel_idx: &arrayfire::Array<i32>,
+    neuron_size: u64,
+    neuron_pos: &mut arrayfire::Array<Z>,
+    neuron_idx: &mut arrayfire::Array<i32>
+)
+{
+    let space_dims = neuron_pos.dims()[1];
+    let mut temparr = arrayfire::constant::<f64>(ZERO_F64,arrayfire::Dim4::new(&[neuron_size,space_dims,1,1])).cast::<Z>();
+
+    let seq1 = arrayfire::Seq::new(0, (space_dims-1) as i32, 1);
+    let in_idx = neuron_idx.clone();
+
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(&in_idx, 0, None);
+    idxrs.set_index(&seq1, 1, Some(false));
+    arrayfire::assign_gen(&mut temparr, &idxrs, neuron_pos);
+
+
+
+    let mut idxrs = arrayfire::Indexer::default();
+    idxrs.set_index(sel_idx, 0, None);
+    idxrs.set_index(&seq1, 1, Some(false));
+
+    *neuron_pos = arrayfire::index_gen(&temparr, idxrs);
+    *neuron_idx = sel_idx.clone();
+}
+
+
