@@ -614,17 +614,17 @@ pub fn delete_smallest_neurons<Z: arrayfire::FloatingPoint>(
 
 
     //let WValues_num  = WValues.dims()[0];
-    let abs = arrayfire::abs(&newWValues);
-    let  (keys, values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
-    let (_,mut idx) = arrayfire::sort_index(&values, 0, false);
-
+    
     let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
 	let mut idx = arrayfire::constant::<u32>(0,single_dims);
 	let mut keys = arrayfire::constant::<i32>(0,single_dims);
 
     if WValues.is_double()
     {
-         
+        let abs = arrayfire::abs(&newWValues).cast::<f64>();
+        let mut values = abs.clone();
+        (keys, values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
+        (_, idx) = arrayfire::sort_index(&values, 0, false);    
     }
     else 
     {
