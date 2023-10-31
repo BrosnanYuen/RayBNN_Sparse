@@ -2,12 +2,15 @@
 #![allow(non_snake_case)]
 
 use arrayfire;
+use RayBNN_Sparse;
+use RayBNN_DataLoader;
 
 
 const BACK_END: arrayfire::Backend = arrayfire::Backend::CUDA;
 const DEVICE: i32 = 0;
 
-
+use std::collections::HashMap;
+use rayon::prelude::*;
 
 
 #[test]
@@ -19,9 +22,8 @@ fn test_adjacency4() {
     let neuron_size: u64 = 16;
 
     let matrix_dims = arrayfire::Dim4::new(&[neuron_size,neuron_size,1,1]);
-    let mut W = clusterdiffeq::export::dataloader_f64::file_to_matrix(
+    let mut W = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
     	"./test_data/sparse_test.csv",
-    	matrix_dims
     );
 
     //arrayfire::print_gen("W".to_string(), &W, Some(6));
@@ -61,9 +63,8 @@ fn test_adjacency4() {
 	};
 
     let neuron_idx_dims = arrayfire::Dim4::new(&[1,13,1,1]);
-    let mut neuron_idx = clusterdiffeq::export::dataloader_i32::file_to_matrix(
+    let mut neuron_idx = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<i32>(
     	"./test_data/neuron_idx.csv",
-    	neuron_idx_dims
     );
 
     neuron_idx = arrayfire::transpose(&neuron_idx, false);
@@ -71,16 +72,14 @@ fn test_adjacency4() {
 
 
     let glia_pos_dims = arrayfire::Dim4::new(&[2,3,1,1]);
-    let mut glia_pos = clusterdiffeq::export::dataloader_f64::file_to_matrix(
+    let mut glia_pos = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
     	"./test_data/glia_pos.csv",
-    	glia_pos_dims
     );
 
 
     let neuron_pos_dims = arrayfire::Dim4::new(&[13,3,1,1]);
-    let mut neuron_pos = clusterdiffeq::export::dataloader_f64::file_to_matrix(
+    let mut neuron_pos = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
     	"./test_data/neuron_pos.csv",
-    	neuron_pos_dims
     );
 
     
