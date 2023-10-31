@@ -417,7 +417,9 @@ pub fn delete_neurons_at_idx<Z: arrayfire::FloatingPoint >(
 
 
 pub fn delete_unused_neurons(
-    netdata: &network_metadata_type,
+    modeldata_int: &HashMap<String, u64>,
+
+
     WValues: &mut arrayfire::Array<f64>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>,
@@ -425,10 +427,18 @@ pub fn delete_unused_neurons(
     neuron_pos: &mut arrayfire::Array<f64>,
     neuron_idx: &mut arrayfire::Array<i32>
 ){
+
+    let neuron_size: u64 = modeldata_int["neuron_size"].clone();
+    let input_size: u64 = modeldata_int["input_size"].clone();
+    let output_size: u64 = modeldata_int["output_size"].clone();
+    let space_dims: u64 = modeldata_int["space_dims"].clone();
+
+    /* 
     let neuron_size: u64 = netdata.neuron_size.clone();
     let input_size: u64 = netdata.input_size.clone();
     let output_size: u64 = netdata.output_size.clone();
     let space_dims: u64 = netdata.space_dims.clone();
+    */
 
     //Get active non zero cols
     let mut temparr = arrayfire::constant::<bool>(false,arrayfire::Dim4::new(&[neuron_size,1,1,1]));
