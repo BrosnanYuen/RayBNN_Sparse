@@ -153,9 +153,8 @@ fn test_remove7() {
 
 
     let neuron_idx2_dims = arrayfire::Dim4::new(&[1,10,1,1]);
-    let mut neuron_idx2 = clusterdiffeq::export::dataloader_i32::file_to_matrix(
+    let mut neuron_idx2 = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<i32>(
     	"./test_data/neuron_idx2.csv",
-    	neuron_idx2_dims
     );
 
     neuron_idx2 = arrayfire::transpose(&neuron_idx2, false);
