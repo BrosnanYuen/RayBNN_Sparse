@@ -741,13 +741,13 @@ pub fn select_neurons<Z: arrayfire::FloatingPoint>(
 
 
 
-pub fn delete_smallest_neurons_with_prob(
-    netdata: &network_metadata_type,
+pub fn delete_smallest_neurons_with_prob<Z: arrayfire::FloatingPoint>(
+    modeldata_int: &HashMap<String, u64>,
+
     neuron_idx: &arrayfire::Array<i32>,
     del_num: u64,
-    
 
-    WValues: &mut arrayfire::Array<f64>,
+    WValues: &mut arrayfire::Array<Z>,
     WRowIdxCOO: &mut arrayfire::Array<i32>,
     WColIdx: &mut arrayfire::Array<i32>,
 
