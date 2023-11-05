@@ -24,9 +24,8 @@ fn test_remove7() {
     let neuron_size: u64 = 16;
 
     let matrix_dims = arrayfire::Dim4::new(&[neuron_size,neuron_size,1,1]);
-    let mut W = clusterdiffeq::export::dataloader_f64::file_to_matrix(
+    let mut W = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
     	"./test_data/sparse_test.csv",
-    	matrix_dims
     );
 
     W = arrayfire::sparse_from_dense(&W, arrayfire::SparseFormat::COO);
