@@ -60,9 +60,8 @@ fn test_remove7() {
 
 
     let neuron_pos_dims = arrayfire::Dim4::new(&[13,3,1,1]);
-    let mut neuron_pos = clusterdiffeq::export::dataloader_f64::file_to_matrix(
-    	"./test_data/neuron_pos.csv",
-    	neuron_pos_dims
+    let mut neuron_pos = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
+    	"./test_data/neuron_pos.csv"
     );
 
     clusterdiffeq::graph::adjacency_f64::delete_unused_neurons(
