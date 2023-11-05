@@ -45,9 +45,8 @@ fn test_remove7() {
 
 
     let neuron_idx_dims = arrayfire::Dim4::new(&[1,13,1,1]);
-    let mut neuron_idx = clusterdiffeq::export::dataloader_i32::file_to_matrix(
-    	"./test_data/neuron_idx.csv",
-    	neuron_idx_dims
+    let mut neuron_idx = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<i32>(
+    	"./test_data/neuron_idx.csv"
     );
 
     neuron_idx = arrayfire::transpose(&neuron_idx, false);
@@ -55,9 +54,8 @@ fn test_remove7() {
 
 
     let glia_pos_dims = arrayfire::Dim4::new(&[2,3,1,1]);
-    let mut glia_pos = clusterdiffeq::export::dataloader_f64::file_to_matrix(
-    	"./test_data/glia_pos.csv",
-    	glia_pos_dims
+    let mut glia_pos = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
+    	"./test_data/glia_pos.csv"
     );
 
 
