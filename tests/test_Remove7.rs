@@ -64,8 +64,9 @@ fn test_remove7() {
     	"./test_data/neuron_pos.csv"
     );
 
-    clusterdiffeq::graph::adjacency_f64::delete_unused_neurons(
-    		&netdata,
+    RayBNN_Sparse::Util::Remove::delete_unused_neurons(
+    		&modeldata_int,
+
             &mut WValues,
             &mut WRowIdxCOO,
             &mut WColIdx,
@@ -81,9 +82,8 @@ fn test_remove7() {
 
 
     let matrix_dims = arrayfire::Dim4::new(&[neuron_size,neuron_size,1,1]);
-    let mut W2 = clusterdiffeq::export::dataloader_f64::file_to_matrix(
-        "./test_data/sparse_test2.csv",
-        matrix_dims
+    let mut W2 = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
+        "./test_data/sparse_test2.csv"
     );
 
     W2 = arrayfire::sparse_from_dense(&W2, arrayfire::SparseFormat::COO);
@@ -187,9 +187,8 @@ fn test_remove7() {
 
 
     let glia_pos_dims2 = arrayfire::Dim4::new(&[5,3,1,1]);
-    let mut glia_pos2 = clusterdiffeq::export::dataloader_f64::file_to_matrix(
-    	"./test_data/glia_pos2.csv",
-    	glia_pos_dims2
+    let mut glia_pos2 = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
+    	"./test_data/glia_pos2.csv"
     );
 
     glia_pos2 = arrayfire::flat(&glia_pos2);
@@ -219,9 +218,8 @@ fn test_remove7() {
 
 
     let neuron_pos2_dims = arrayfire::Dim4::new(&[10,3,1,1]);
-    let mut neuron_pos2 = clusterdiffeq::export::dataloader_f64::file_to_matrix(
-    	"./test_data/neuron_pos2.csv",
-    	neuron_pos2_dims
+    let mut neuron_pos2 = RayBNN_DataLoader::Dataset::CSV::file_to_arrayfire::<f64>(
+    	"./test_data/neuron_pos2.csv"
     );
 
     neuron_pos2 = arrayfire::flat(&neuron_pos2);
