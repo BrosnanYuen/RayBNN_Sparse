@@ -792,21 +792,40 @@ pub fn delete_smallest_neurons_with_prob<Z: arrayfire::FloatingPoint>(
     
 
 
-    //let WValues_num  = WValues.dims()[0];
-    let abs = arrayfire::abs(&newWValues);
 
-    let  (keys, mut values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
+    let single_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+	let mut idx = arrayfire::constant::<u32>(0,single_dims);
+	let mut keys = arrayfire::constant::<i32>(0,single_dims);
+
+    if WValues.is_double()
+    {
+        let abs = arrayfire::abs(&newWValues).cast::<f64>();
+        let mut values = abs.clone();
+        (keys, values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
+
+        let randarr = arrayfire::randu::<f64>(values.dims());
+        values = arrayfire::mul(&values, &randarr, false);    
+
+        (_, idx) = arrayfire::sort_index(&values, 0, false);    
+    }
+    else 
+    {
+        let abs = arrayfire::abs(&newWValues).cast::<f32>();
+        let mut values = abs.clone();
+        (keys, values) = arrayfire::sum_by_key(&newWColIdx, &abs, 0);
+
+        let randarr = arrayfire::randu::<f32>(values.dims());
+        values = arrayfire::mul(&values, &randarr, false);
+
+        (_, idx) = arrayfire::sort_index(&values, 0, false);   
+    }
 
 
 
-    let randarr = arrayfire::randu::<f64>(values.dims());
-
-    values = arrayfire::mul(&values, &randarr, false);
 
 
 
-    //Sort to find small neurons
-    let (_,mut idx) = arrayfire::sort_index(&values, 0, false);
+
 
     
     //Select biggest neurons
