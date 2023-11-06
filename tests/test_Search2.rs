@@ -268,4 +268,44 @@ fn test_search2() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let input_cpu:Vec<i32> = vec![521, 223, 521, 231, 443, 443, 831, 21,  521, 231, 443, 21, 521, 521, 521, 443, 521];
+    let mut input = arrayfire::Array::new(&input_cpu, arrayfire::Dim4::new(&[input_cpu.len() as u64, 1, 1, 1]));
+
+
+    let temp_dims = arrayfire::Dim4::new(&[1,1,1,1]);
+
+	let mut bins = arrayfire::constant::<i32>(0,temp_dims);
+	let mut counts = arrayfire::constant::<i32>(0,temp_dims);
+
+	RayBNN_Sparse::Util::Search::integer_histogram(
+        &input,
+        &mut bins,
+        &mut counts
+    );
+
+    let mut bins_cpu = vec!(i32::default();bins.elements());
+    bins.host(&mut bins_cpu);
+
+    let mut counts_cpu = vec!(i32::default();counts.elements());
+    counts.host(&mut counts_cpu);
+
+    let mut bins_act:Vec<i32> = vec![ 21, 223, 231, 443, 521, 831];
+    let mut counts_act:Vec<i32> = vec![2,   1,   2,   4,   7,   1];
+
+    assert_eq!(bins_cpu, bins_act );
+
+    assert_eq!(counts_cpu, counts_act );
 }
