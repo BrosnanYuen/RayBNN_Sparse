@@ -1,6 +1,6 @@
 [package]
 name = "RayBNN_Sparse"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Brosnan Yuen <brosnanyuen@gmail.com>"]
 edition = "2021"
 description = "Sparse Matrix Library for GPUs, CPUs, and FPGAs via CUDA, OpenCL, and oneAPI"
