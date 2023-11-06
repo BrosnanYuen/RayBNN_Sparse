@@ -186,11 +186,11 @@ pub fn parallel_lookup<Z: arrayfire::HasAfEnum, V: arrayfire::IndexableType>(
 
 
 
-pub fn integer_histogram(
-	input: &arrayfire::Array<i32>,
+pub fn integer_histogram<Z: arrayfire::RealNumber + arrayfire::ReduceByKeyInput>(
+	input: &arrayfire::Array<Z>,
 
-    bins: &mut arrayfire::Array<i32>,
-    counts: &mut arrayfire::Array<u32>
+    bins: &mut arrayfire::Array<Z>,
+    counts: &mut arrayfire::Array<i32>
     ) {
 
 
@@ -198,10 +198,8 @@ pub fn integer_histogram(
 
 
     let ones = arrayfire::constant::<i32>(1,sorted.dims());
-    let  (keys, values) = arrayfire::sum_by_key(&sorted, &ones, 0);
+    (*bins, *counts) = arrayfire::sum_by_key(&sorted, &ones, 0);
 
-    *bins = keys;
-    *counts = values.cast::<u32>();
 }
 
 
