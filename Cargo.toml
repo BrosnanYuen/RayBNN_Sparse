@@ -1,6 +1,6 @@
 [package]
 name = "RayBNN_Sparse"
-version = "2.0.1"
+version = "2.0.2"
 authors = ["Brosnan Yuen <brosnanyuen@gmail.com>"]
 edition = "2021"
 description = "Sparse Matrix Library for GPUs, CPUs, and FPGAs via CUDA, OpenCL, and oneAPI"
@@ -21,7 +21,7 @@ half = { version = "2.4.1" , features = ["num-traits"] }
 rayon = "1.10.0"
 rand = "0.8.5"
 nohash-hasher = "0.2.0"
-RayBNN_DataLoader = "2.0.2"
+RayBNN_DataLoader = "2.0.3"
 
 
 [dev-dependencies]
@@ -32,7 +32,7 @@ half = { version = "2.4.1" , features = ["num-traits"] }
 rayon = "1.10.0"
 rand = "0.8.5"
 nohash-hasher = "0.2.0"
-RayBNN_DataLoader = "2.0.2"
+RayBNN_DataLoader = "2.0.3"
 
 
 [build-dependencies]
@@ -43,7 +43,7 @@ half = { version = "2.4.1" , features = ["num-traits"] }
 rayon = "1.10.0"
 rand = "0.8.5"
 nohash-hasher = "0.2.0"
-RayBNN_DataLoader = "2.0.2"
+RayBNN_DataLoader = "2.0.3"
 
 
 [lib]
